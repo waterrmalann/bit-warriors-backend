@@ -14,7 +14,7 @@
 
 ## 📦 Services
 
-[!](diagram.png)
+![high level system design diagram](diagram.png)
 
 - **Gateway:** The gateway is responsible for accepting the initial request, authenticating it (using JWT), and proxying it to other services.
 - **Admin Service:** A superuser service that lets a sysop manage and talk to individual services. This is also where problems and learning paths are added.
