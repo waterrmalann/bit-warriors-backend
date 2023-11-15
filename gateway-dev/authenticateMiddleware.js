@@ -5,7 +5,7 @@ export default function authenticate(req, res, next) {
     if (token) {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = { username: decoded.username };
+            req.headers['X-Username'] = decoded.username;
             next();
         } catch (err) {
             res.status(401).send("not authorized, invalid token");
