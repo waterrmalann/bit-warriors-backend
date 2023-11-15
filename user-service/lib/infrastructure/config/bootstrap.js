@@ -4,7 +4,8 @@ dotenv.config();
 import env from './environment.js';
 import connectDB from '../database/setup.js';
 
-export default async function init() {
-    console.log(env);
+async function init() {
     connectDB();
 }
+
+export default { init };
