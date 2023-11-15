@@ -29,14 +29,20 @@ export async function LoginUser(req, res) {
         });
 
         if (response.success) {
+            res.cookie('jwt', response.token, {
+                httpOnly: true,
+                // secure: process.env.NODE_ENV !== 'development',
+                // sameSite: 'strict',
+                maxAge: 7 * 24 * 60 * 60 * 1000
+            });
+
             res.status(200).send({ mfa_required: false, message: "You are in.", token: response.token });
         } else {
             res.status(200).send({ mfa_required: true, message: "OTP Required" });
         }
-
-        // todo: Set cookie.
     } catch (err) {
-        res.status(500).send({ message: "Internal Server Error" });
+        console.log(err);
+        res.status(err.statusCode || 500).send({ message: err.message });
     }
 }
 
