@@ -7,26 +7,44 @@ import UserRepository from '../../infrastructure/repositories/UserRepositoryMong
 // Security (JWT / Hashing Abstraction)
 import AccessTokenManager from '../../infrastructure/security/JwtAccessTokenManager.js';
 import PasswordManager from '../../infrastructure/security/BcryptPasswordManager.js';
+import MFAManager from '../../infrastructure/security/otpMFAManager.js';
 // Services (Features Abstraction)
 import MailerService from '../../infrastructure/services/ResendMailerService.js';
 
 const userRepository = new UserRepository();
 const accessTokenManager = new AccessTokenManager();
 const passwordManager = new PasswordManager();
+const mfaManager = new MFAManager();
 const mailerService = new MailerService();
 
 export async function LoginUser(req, res) {
     const { username, password } = req.body;
     try {
-        const user = await LoginUserInteractor(username, password, { 
+        const response = await LoginUserInteractor(username, password, { 
             userRepository: userRepository,
             tokenManager: accessTokenManager,
-            passwordManager: passwordManager
+            passwordManager: passwordManager,
+            mfaManager: mfaManager
         });
-        res.status(200).send({ message: "You are in." });
+
+        if (response.success) {
+            res.status(200).send({ mfa_required: false, message: "You are in." });
+        } else {
+            res.status(200).send({ mfa_required: true, message: "OTP Required" });
+        }
+
         // todo: Set cookie.
     } catch (err) {
         res.status(500).send({ message: "Internal Server Error" });
+    }
+}
+
+export async function LoginUserMFA(req, res) {
+    const { otp } = req.body;
+    try {
+        throw new Error("MFA not implemented");
+    } catch (err) {
+        res.status(500).send({ message: "Internal Server Errror" });
     }
 }
 
@@ -57,7 +75,7 @@ export async function VerifyEmail(req, res) {
     try {
         const result = await VerifyUserInteractor(verificationCode, { 
             userRepository: userRepository, 
-            accessTokenManager: accessTokenManager 
+            accessTokenManager: accessTokenManager
         });
         if (result) {
             res.status(200).send({ message: "email has been verified." });

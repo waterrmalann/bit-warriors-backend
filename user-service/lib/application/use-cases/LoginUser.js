@@ -1,6 +1,6 @@
 'use strict';
 
-export default async (email, password, { userRepository, tokenManager, passwordManager }) => {
+export default async (email, password, { userRepository, tokenManager, passwordManager, mfaManager }) => {
     const user = userRepository.findByEmail(email);
     const doPasswordsMatch = await passwordManager.compare(password, user.password);
 
@@ -9,5 +9,12 @@ export default async (email, password, { userRepository, tokenManager, passwordM
         throw Object.assign(new Error('Bad credentials'), { statusCode: 401 });
     }
 
-    return tokenManager.generate({ uid: user.id });
+    if (user.mfa) {
+        const otp = await mfaManager.generateOTP();
+        user.setOTP(otp, 5);
+        userRepository.merge(user);
+        return { success: false, token: '', status: "MFA_REQUIRED" };
+    } else {
+        return { success: true, token: tokenManager.generate({ uid: user.id }), status: "LOGGED_IN" };
+    }
 };

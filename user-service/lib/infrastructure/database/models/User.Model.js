@@ -53,6 +53,21 @@ const UserSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    otp: {
+        requested: {
+            type: Boolean,
+            default: false,
+        },
+        value: String,
+        expiry: {
+            type: Number,
+            default: 0
+        },
+    },
+    mfa: {
+        type: Boolean,
+        default: false
+    }
 });
 
 const UserModel = mongoose.model('User', UserSchema);

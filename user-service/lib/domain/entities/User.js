@@ -18,6 +18,14 @@ export default class {
         this.currentActiveDays = 0;
         this.maxActiveDays = 0;
 
+        this.otp = {
+            requested: false,
+            value: undefined,
+            expiry: 0
+        }
+
+        this.mfa = false;
+
         this._modifiedFields = {};
     }
 
@@ -31,6 +39,25 @@ export default class {
         this.emailVerified = state;
 
         this._modifiedFields.emailVerified = true;
+    }
+
+    setOTP(value, expiryInMinutes) {
+        this.otp.value = value;
+        this.otp.requested = true;
+        
+        const currentDateAsTimestamp = Math.floor(Date.now() / 1000);
+        const futureDateAsTimestamp = currentDateAsTimestamp + (expiryInMinutes * 60);
+        this.otp.expiry = futureDateAsTimestamp;
+
+        this._modifiedFields.otp = true;
+    }
+
+    clearOTP() {
+        this.otp.value = undefined;
+        this.otp.requested = false;
+        this.otp.expiry = 0;
+
+        this._modifiedFields.otp = true;
     }
 
     getModifiedFields() {
