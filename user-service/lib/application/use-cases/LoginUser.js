@@ -37,6 +37,6 @@ export default async (username, password, { userRepository, tokenManager, passwo
 
         return { success: false, token: '', status: "MFA_REQUIRED" };
     } else {
-        return { success: true, token: tokenManager.generate({ uid: user.id }, '7d'), status: "LOGGED_IN" };
+        return { success: true, token: tokenManager.generate({ id: user.id, username: user.username, email: user.email }, '7d'), status: "LOGGED_IN" };
     }
 };
