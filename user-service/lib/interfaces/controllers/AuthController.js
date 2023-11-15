@@ -24,7 +24,8 @@ export async function LoginUser(req, res) {
             userRepository: userRepository,
             tokenManager: accessTokenManager,
             passwordManager: passwordManager,
-            mfaManager: mfaManager
+            mfaManager: mfaManager,
+            mailerService: mailerService
         });
 
         if (response.success) {
