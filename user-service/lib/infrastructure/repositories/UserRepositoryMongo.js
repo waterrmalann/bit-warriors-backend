@@ -65,5 +65,25 @@ function mapToUserEntity(mongooseUser) {
         return null;
     }
 
-    return new User(mongooseUser._id, mongooseUser.username, mongooseUser.email, mongooseUser.password);
+    const user = new User(
+        mongooseUser._id, 
+        mongooseUser.username, 
+        mongooseUser.email, 
+        mongooseUser.password,        
+    );
+    
+    user.emailVerified = mongooseUser.emailVerified;
+    user.bio = mongooseUser.bio;
+    user.clan = mongooseUser.clan;
+    user.followers = mongooseUser.followers;
+    user.following = mongooseUser.following;
+    user.createdAt = mongooseUser.createdAt;
+    user.totalScore = mongooseUser.totalScore;
+    user.totalSubmissions = mongooseUser.totalSubmissions;
+    user.totalActiveDays = mongooseUser.totalActiveDays;
+    user.maxActiveDays = mongooseUser.maxActiveDays;
+    user.mfa = mongooseUser.mfa;
+    user.otp = mongooseUser.otp;
+
+    return user;
 }
