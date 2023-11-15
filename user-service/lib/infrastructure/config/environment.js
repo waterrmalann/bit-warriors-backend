@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 export default (() => {
     console.log("[env] Environment variables have been injected from `.env`");
 
