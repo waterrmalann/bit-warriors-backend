@@ -25,10 +25,11 @@ export default class extends IUserRepository {
                 updateFields[field] = userEntity[field];
             }
         }
-
-        await this.UserModel.findByIdAndUpdate(userEntity.id, updateFields);
+        
+        await MongooseUser.findByIdAndUpdate(userEntity.id, updateFields);
 
         userEntity.clearModifiedFields();
+        return true;
     }
 
     async remove(userId) {
@@ -42,12 +43,12 @@ export default class extends IUserRepository {
     }
 
     async findByEmail(userEmail) {
-        const mongooseUser = await MongooseUser.find({ email: userEmail });
+        const mongooseUser = await MongooseUser.findOne({ email: userEmail });
         return mapToUserEntity(mongooseUser);
     }
 
     async findByUsername(username) {
-        const mongooseUser = await MongooseUser.find({ username: username });
+        const mongooseUser = await MongooseUser.findOne({ username: username });
         return mapToUserEntity(mongooseUser);
     }
 
@@ -64,5 +65,5 @@ function mapToUserEntity(mongooseUser) {
         return null;
     }
 
-    return new User(mongooseUser.id, mongooseUser.username, mongooseUser.email, mongooseUser.password);
+    return new User(mongooseUser._id, mongooseUser.username, mongooseUser.email, mongooseUser.password);
 }

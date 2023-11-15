@@ -11,7 +11,7 @@ export default async (username, email, password, { userRepository, accessTokenMa
     throw Object.assign(new Error("password must be atleast 8 characters long."), {statusCode: 403});
   }
   
-  const verificationCode = await accessTokenManager.generate({ username: username}, '1h');
+  const verificationCode = await accessTokenManager.generate({ username: username }, '1h');
   const verificationLink = `http://localhost:3000/verify/${verificationCode}`;
   const mail = await mailerService.sendMail({
     to: email,
@@ -29,9 +29,9 @@ export default async (username, email, password, { userRepository, accessTokenMa
     throw Object.assign(new Error("could not send verification email"), { statusCode: 503 });
   }
 
-  const hashedPassword = passwordManager.hash(password);
+  const hashedPassword = await passwordManager.hash(password);
 
-  const user = new User(username, email, hashedPassword);
+  const user = new User(null, username, email, hashedPassword);
 
   return userRepository.persist(user);
 };

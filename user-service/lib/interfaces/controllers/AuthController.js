@@ -28,7 +28,7 @@ export async function LoginUser(req, res) {
         });
 
         if (response.success) {
-            res.status(200).send({ mfa_required: false, message: "You are in." });
+            res.status(200).send({ mfa_required: false, message: "You are in.", token: response.token });
         } else {
             res.status(200).send({ mfa_required: true, message: "OTP Required" });
         }
@@ -59,6 +59,7 @@ export async function RegisterUser(req, res) {
         })
         res.status(201).send({ message: "registered successfully, verify email " });
     } catch (err) {
+        console.error(err);
         res.status(500).send({ message: "unauthorized" });
     }
 }
