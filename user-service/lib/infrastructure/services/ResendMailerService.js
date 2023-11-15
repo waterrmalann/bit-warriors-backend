@@ -1,7 +1,8 @@
-import IMailerService from "../../domain/services/IMailerService";
+import IMailerService from "../../domain/services/IMailerService.js";
 import { Resend } from 'resend'; 
+import env from '../config/environment.js';
 
-const resend = new Resend('re_5zLhbZ1k_6cEri9RhHrPXvxs7egzuK2Lp');
+const resend = new Resend(env.RESEND_API_KEY);
 
 export default class extends IMailerService {
     async sendMail({ to, subject, html }) {

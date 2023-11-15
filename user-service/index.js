@@ -1,7 +1,6 @@
 import createServer from "./lib/infrastructure/webserver/server.js";
 import bootstrap from './lib/infrastructure/config/bootstrap.js';
 
-// Start the server
 const start = async () => {
 
     try {

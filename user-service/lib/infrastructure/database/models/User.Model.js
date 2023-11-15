@@ -58,7 +58,7 @@ const UserSchema = new mongoose.Schema({
             type: Boolean,
             default: false,
         },
-        value: String,
+        value: {type: String, default: ''},
         expiry: {
             type: Number,
             default: 0
