@@ -1,8 +1,8 @@
 'use strict';
 
-import IUserRepository from '../../domain/repositories/IUserRepository';
+import IUserRepository from '../../domain/repositories/IUserRepository.js';
 
-import User from '../../domain/entities/User';
+import User from '../../domain/entities/User.js';
 import MongooseUser from '../database/models/User.Model.js';
 
 export default class extends IUserRepository {

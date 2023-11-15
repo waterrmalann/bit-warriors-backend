@@ -1,6 +1,6 @@
 'use strict';
 
-import User from '../../domain/entities/User';
+import User from '../../domain/entities/User.js';
 
 export default async (username, email, password, { userRepository, accessTokenManager, mailerService, passwordManager }) => {
   if (username.length < 4) {

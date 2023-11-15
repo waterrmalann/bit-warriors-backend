@@ -1,4 +1,4 @@
-import IAccessTokenManager from '../../application/security/IAccessTokenManager';
+import IAccessTokenManager from '../../application/security/IAccessTokenManager.js';
 
 import jwt from 'jsonwebtoken';
 

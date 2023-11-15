@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import IPasswordManager from '../../application/security/IPasswordManager';
+import IPasswordManager from '../../application/security/IPasswordManager.js';
 
 export default class extends IPasswordManager {
     async hash(password) {
