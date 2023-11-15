@@ -26,8 +26,4 @@ export default class IUserRepository {
     async find() {
         throw new Error('find method not implemented');
     }
-
-    async setVerified(userId, state) {
-        throw new Error('setVerified method not implemented');
-    }
 };
