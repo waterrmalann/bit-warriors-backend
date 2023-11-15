@@ -1,8 +1,8 @@
 'use strict';
 
-export default async (email, password, { userRepository, tokenManager, comparePassword }) => {
-    const user = userRepository.getByEmail(email);
-    const doPasswordsMatch = await comparePassword(password, user.password);
+export default async (email, password, { userRepository, tokenManager, passwordManager }) => {
+    const user = userRepository.findByEmail(email);
+    const doPasswordsMatch = await passwordManager.compare(password, user.password);
 
     if (!user || !doPasswordsMatch) {
         // todo: Decouple statusCode (HTTP Method) from Business Logic

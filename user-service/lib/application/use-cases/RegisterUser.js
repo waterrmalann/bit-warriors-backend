@@ -2,7 +2,7 @@
 
 import User from '../../domain/entities/User';
 
-export default async (username, email, password, { userRepository, accessTokenManager, mailerService }) => {
+export default async (username, email, password, { userRepository, accessTokenManager, mailerService, passwordManager }) => {
   if (username.length < 4) {
     throw Object.assign(new Error("username must be atleast 4 letters long."), {statusCode: 403});
   }
@@ -29,7 +29,9 @@ export default async (username, email, password, { userRepository, accessTokenMa
     throw Object.assign(new Error("could not send verification email"), { statusCode: 503 });
   }
 
-  const user = new User(username, email, password);
+  const hashedPassword = passwordManager.hash(password);
+
+  const user = new User(username, email, hashedPassword);
 
   return userRepository.persist(user);
 };
