@@ -1,12 +1,15 @@
 'use strict';
 
-export default async (email, password, { userRepository, tokenManager, passwordManager, mfaManager, mailerService }) => {
-    const user = userRepository.findByEmail(email);
-    const doPasswordsMatch = await passwordManager.compare(password, user.password);
-
-    if (!user || !doPasswordsMatch) {
+export default async (username, password, { userRepository, tokenManager, passwordManager, mfaManager, mailerService }) => {
+    const user = await userRepository.findByUsername(username) ?? await userRepository.findByEmail(username);
+    if (!user) {
         // todo: Decouple statusCode (HTTP Method) from Business Logic
         throw Object.assign(new Error('Bad credentials'), { statusCode: 401 });
+    }
+    
+    const doPasswordsMatch = await passwordManager.compare(password, user.password);
+    if (!doPasswordsMatch) {
+        throw Object.assign(new Error('Invalid username/password'), { statusCode: 401 });
     }
 
     if (!user.emailVerified) {
@@ -34,6 +37,6 @@ export default async (email, password, { userRepository, tokenManager, passwordM
 
         return { success: false, token: '', status: "MFA_REQUIRED" };
     } else {
-        return { success: true, token: tokenManager.generate({ uid: user.id }), status: "LOGGED_IN" };
+        return { success: true, token: tokenManager.generate({ uid: user.id }, '7d'), status: "LOGGED_IN" };
     }
 };
