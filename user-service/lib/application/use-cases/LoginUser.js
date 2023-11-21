@@ -4,7 +4,7 @@ export default async (username, password, { userRepository, tokenManager, passwo
     const user = await userRepository.findByUsername(username) ?? await userRepository.findByEmail(username);
     if (!user) {
         // todo: Decouple statusCode (HTTP Method) from Business Logic
-        throw Object.assign(new Error('Bad credentials'), { statusCode: 401 });
+        throw Object.assign(new Error('Invalid username/password'), { statusCode: 401 });
     }
     
     const doPasswordsMatch = await passwordManager.compare(password, user.password);
@@ -37,6 +37,7 @@ export default async (username, password, { userRepository, tokenManager, passwo
 
         return { success: false, token: '', status: "MFA_REQUIRED" };
     } else {
-        return { success: true, token: tokenManager.generate({ id: user.id, username: user.username, email: user.email }, '7d'), status: "LOGGED_IN" };
+        let accessToken = tokenManager.generate({ id: user.id, username: user.username, email: user.email }, '7d');
+        return { success: true, token: accessToken, status: "LOGGED_IN" };
     }
 };

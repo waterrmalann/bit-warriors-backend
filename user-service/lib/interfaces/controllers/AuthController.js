@@ -66,8 +66,7 @@ export async function RegisterUser(req, res) {
         })
         res.status(201).send({ message: "registered successfully, verify email " });
     } catch (err) {
-        console.error(err);
-        res.status(500).send({ message: "unauthorized" });
+        res.status(err.statusCode || 500).send({ message: err.message });
     }
 }
 
@@ -76,6 +75,7 @@ export async function LogoutUser(_req, res) {
         httpOnly: true,
         expires: new Date(0)
     });
+    res.json({ success: true });
 }
 
 export async function VerifyEmail(req, res) {
@@ -86,11 +86,11 @@ export async function VerifyEmail(req, res) {
             accessTokenManager: accessTokenManager
         });
         if (result) {
-            res.status(200).send({ message: "email has been verified." });
+            res.status(200).send({ success: true, message: "email has been verified." });
         } else {
-            res.status(500).send({ message: "invalid token" });
+            res.status(500).send({ success: false, message: "invalid token" });
         }
     } catch (err) {
-        res.status(500).send({ message: err.message });
+        res.status(500).send({ success: false, message: err.message });
     }
 }

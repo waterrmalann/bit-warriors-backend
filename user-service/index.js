@@ -7,7 +7,7 @@ const start = async () => {
         await bootstrap.init();
 
         const app = await createServer();
-        const port = 3001;
+        const port = 3002;
         app.listen(port, () => {
             console.log(`[ SERVICE :: USER SERVICE ] User Service is listening on http://localhost:${port}`);
         });

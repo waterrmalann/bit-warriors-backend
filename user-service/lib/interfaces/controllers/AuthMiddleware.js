@@ -7,11 +7,16 @@ const accessTokenManager = new AccessTokenManager();
 
 export async function isAuthenticated(req, res, next) {
     let token = req.cookies.jwt;
+    console.log("token", token);
     try {
-        const user = AuthenticateUserInteractor(token, { userRepository: userRepository, accessTokenManager: accessTokenManager });
+        const user = await AuthenticateUserInteractor(token, { 
+            userRepository: userRepository, 
+            accessTokenManager: accessTokenManager 
+        });
+
         req.user = user;
         next();
     } catch (err) {
-        res.status(401).send({ message: err });
+        res.status(401).send({ message: err.message });
     }
 }
