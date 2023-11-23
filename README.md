@@ -17,8 +17,8 @@
 ![high level system design diagram](diagram.png)
 
 - **Gateway:** The gateway is responsible for accepting the initial request, authenticating it (using JWT), and proxying it to other services.
-- **Admin Service:** A superuser service that lets a sysop manage and talk to individual services. This is also where problems and learning paths are added.
-- **User Service:** Everything from initial authorization to user profiles, follower relationships and inboxes are part of the user service.
+- [**Admin Service:**](https://github.com/waterrmalann/bit-warriors-admin) A superuser service that lets a sysop manage and talk to individual services. This is also where problems and learning paths are added. Also serves its own frontend (built using React & Vite).
+- [**User Service:**](/user-service/) Everything from initial authorization to user profiles, follower relationships and inboxes are part of the user service.
 - **Problem Service:** Coding challenges and learning paths are served and kept track of by this service.
 - **Submission Service:** Handling the submission, analysis, testing, and ranking of user submitted code.
     - **Test Service (Internal):** Responsible for statically analysing and executing abitrary code using the Code Execution Sandbox. Also keeps track of test cases for each question.
