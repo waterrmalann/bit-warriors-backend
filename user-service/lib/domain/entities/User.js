@@ -42,31 +42,43 @@ export default class {
     }
 
     setBio(data) {
+        if (!data || data === this.bio) return;
         this.bio = data;
         
         this._modifiedFields.bio = true;
     }
 
+    setClan(clan) {
+        if (!clan || clan === this.clan) return;
+        this.clan = clan;
+
+        this._modifiedFields.clan = true;
+    }
+
     setGithubUsername(username) {
+        if (!username || username === this.githubUsername) return;
         this.githubUsername = username;
         
         this._modifiedFields.githubUsername = true;
     }
 
     setLinkedInUsername(username) {
+        if (!username || username === this.linkedInUsername) return;
         this.linkedInUsername = username;
 
         this._modifiedFields.linkedInUsername = true;
     }
 
     setXUsername(username) {
+        if (!username || username === this.xUsername) return;
         this.xUsername = username;
 
         this._modifiedFields.xUsername = true;
     }
     
-    setPersonalWebsite(username) {
-        this.personalWebsite = username;
+    setPersonalWebsite(url) {
+        if (!url || url === this.personalWebsite) return;
+        this.personalWebsite = url;
 
         this._modifiedFields.personalWebsite = true;
     }
