@@ -35,6 +35,12 @@ export default class {
         this._modifiedFields = {};
     }
 
+    setPassword(password) {
+        this.password = data;
+
+        this._modifiedFields.password = true;
+    }
+
     setBio(data) {
         this.bio = data;
         
