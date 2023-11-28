@@ -67,6 +67,19 @@ const UserSchema = new mongoose.Schema({
     mfa: {
         type: Boolean,
         default: false
+    },
+    
+    githubUsername: {
+        type: String
+    },
+    linkedInUsername: {
+        type: String
+    },
+    xUsername: {
+        type: String
+    },
+    personalWebsite: {
+        type: String
     }
 });
 

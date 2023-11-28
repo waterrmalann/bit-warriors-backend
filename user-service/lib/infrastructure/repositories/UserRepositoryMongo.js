@@ -85,5 +85,11 @@ function mapToUserEntity(mongooseUser) {
     user.mfa = mongooseUser.mfa;
     user.otp = mongooseUser.otp;
 
+    // Social Links
+    user.githubUsername = mongooseUser.githubUsername;
+    user.linkedInUsername = mongooseUser.linkedInUsername;
+    user.xUsername = mongooseUser.xUsername;
+    user.personalWebsite = mongooseUser.personalWebsite;
+
     return user;
 }

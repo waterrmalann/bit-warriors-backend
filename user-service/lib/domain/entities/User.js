@@ -8,6 +8,12 @@ export default class {
      
         this.bio = undefined;
         this.clan = undefined;
+
+        this.githubUsername = undefined;
+        this.linkedInUsername = undefined;
+        this.xUsername = undefined;
+        this.personalWebsite = undefined;
+
         this.followers = 0;
         this.following = 0;
         this.createdAt = new Date();
@@ -33,6 +39,30 @@ export default class {
         this.bio = data;
         
         this._modifiedFields.bio = true;
+    }
+
+    setGithubUsername(username) {
+        this.githubUsername = username;
+        
+        this._modifiedFields.githubUsername = true;
+    }
+
+    setLinkedInUsername(username) {
+        this.linkedInUsername = username;
+
+        this._modifiedFields.linkedInUsername = true;
+    }
+
+    setXUsername(username) {
+        this.xUsername = username;
+
+        this._modifiedFields.xUsername = true;
+    }
+    
+    setPersonalWebsite(username) {
+        this.personalWebsite = username;
+
+        this._modifiedFields.personalWebsite = true;
     }
 
     setVerified(state) {
