@@ -7,14 +7,6 @@ import PasswordManager from '../../infrastructure/security/BcryptPasswordManager
 const userRepository = new UserRepository();
 const passwordManager = new PasswordManager();
 
-export async function GetHello(req, res) {
-    res.send({ message: "Hello World " });
-}
-
-export async function GetBye(req, res) {
-    res.send({ message: "Bye World" });
-}
-
 export async function GetProfile(req, res) {
     const { username } = req.params;
     try {
