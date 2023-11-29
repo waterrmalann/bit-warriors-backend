@@ -7,7 +7,6 @@ const accessTokenManager = new AccessTokenManager();
 
 export async function isAuthenticated(req, res, next) {
     let token = req.cookies.jwt;
-    console.log("token", token);
     try {
         const user = await AuthenticateUserInteractor(token, { 
             userRepository: userRepository, 
