@@ -63,6 +63,13 @@ export default class extends IProblemRepository {
         return mapToProblemEntity(mongooseProblem);
     }
 
+    async getRandomProblem(criteria) {
+        const count = await MongooseProblem.estimatedDocumentCount();
+        const randomEntryIndex = Math.floor(Math.random() * count);
+        const mongooseProblem = await MongooseProblem.findOne().skip(randomEntryIndex);
+        return mapToProblemEntity(mongooseProblem);
+    }
+
     async find(problemsAmount) {
         const mongooseProblems = await MongooseProblem.find().limit(problemsAmount);
         return mongooseProblems.map((mongooseProblem) => {

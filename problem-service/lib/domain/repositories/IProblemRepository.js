@@ -23,6 +23,10 @@ export default class IProblemRepository {
         throw new Error("findBySlug method not implemented");
     }
 
+    async getRandomProblem(criteria) {
+        throw new Error("getRandomProblem method not implemented");
+    }
+
     async find() {
         throw new Error('find method not implemented');
     }
