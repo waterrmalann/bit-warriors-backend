@@ -15,7 +15,7 @@ export default class extends IProblemRepository {
             createdAt, modifiedAt 
         } = problemEntity;
         const mongooseProblem = new MongooseProblem({ 
-            id, problemId, title, slug, description, 
+            problemId, title, slug, description, 
             difficulty, constraints, examples, tags,
             hint, createdAt, modifiedAt 
         });
@@ -43,13 +43,12 @@ export default class extends IProblemRepository {
     }
 
     async remove(problemId) {
-        //! fixme: this shouldn't work
-        const doc = await MongooseProblem.findOneAndDelete(problemId);
+        const doc = await MongooseProblem.findOneAndDelete({ problemId });
         return !!doc;
     }
 
-    async findById(problemId) {
-        const mongooseProblem = await MongooseProblem.findById(problemId);
+    async findById(id) {
+        const mongooseProblem = await MongooseProblem.findById(id);
         return mapToProblemEntity(mongooseProblem);
     }
 
