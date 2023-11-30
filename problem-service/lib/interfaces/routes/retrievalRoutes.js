@@ -1,7 +1,10 @@
 import express from 'express';
-import { GetProblem } from '../controllers/ProfileController.js';
+import { GetProblem, ListProblems } from '../controllers/ProfileController.js';
 const router = express.Router();
 
+// GET /problems
+router.get('/', ListProblems);
+// GET /problems/:problemId
 router.get('/:problemId', GetProblem);
 // get ...writeups, get ...submissions
 
