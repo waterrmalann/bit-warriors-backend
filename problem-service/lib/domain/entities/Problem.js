@@ -13,8 +13,8 @@ export default class {
         this.tags = tags;
         this.hint = hint;
         
-        this.upvotes = [];
-        this.downvotes = [];
+        this.upvotes = upvotes;
+        this.downvotes = downvotes;
         
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;

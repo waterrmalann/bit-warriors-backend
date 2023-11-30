@@ -19,7 +19,7 @@ const problemSchema = new mongoose.Schema({
     },
     difficulty: {
         type: String,
-        enum: ['Easy', 'Medium', 'Hard'],
+        enum: ['easy', 'medium', 'hard'],
         required: true
     },
     constraints: {
@@ -41,12 +41,12 @@ const problemSchema = new mongoose.Schema({
         type: String
     },
     upvotes: {
-        type: Number,
-        default: 0
+        type: [mongoose.Schema.Types.ObjectId],
+        default: []
     },
     downvotes: {
-        type: Number,
-        default: 0
+        type: [mongoose.Schema.Types.ObjectId],
+        default: []
     },
     createdAt: {
         type: Date,

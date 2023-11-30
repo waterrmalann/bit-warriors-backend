@@ -6,8 +6,19 @@ import MongooseProblem from '../database/models/Problem.Model.js';
 
 export default class extends IProblemRepository {
     async persist(problemEntity) {
-        const { username, email, password } = problemEntity;
-        const mongooseProblem = new MongooseProblem({ username, email, password });
+        const { 
+            problemId, 
+            title, slug, 
+            description, difficulty, 
+            constraints, examples, 
+            tags, hint,
+            createdAt, modifiedAt 
+        } = problemEntity;
+        const mongooseProblem = new MongooseProblem({ 
+            id, problemId, title, slug, description, 
+            difficulty, constraints, examples, tags,
+            hint, createdAt, modifiedAt 
+        });
         await mongooseProblem.save();
         return mapToProblemEntity(mongooseProblem);
     }
@@ -46,7 +57,7 @@ export default class extends IProblemRepository {
         const mongooseProblem = await MongooseProblem.findOne({ problemId });
         return mapToProblemEntity(mongooseProblem);
     }
-    
+
     async findBySlug(problemSlug) {
         const mongooseProblem = await MongooseProblem.findOne({ slug: problemSlug });
         return mapToProblemEntity(mongooseProblem);
