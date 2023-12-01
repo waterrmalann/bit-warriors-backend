@@ -36,7 +36,7 @@ export default class {
     }
 
     setPassword(password) {
-        this.password = data;
+        this.password = password;
 
         this._modifiedFields.password = true;
     }

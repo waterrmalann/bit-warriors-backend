@@ -12,13 +12,16 @@ export default async (username, oldPassword, newPassword, { userRepository, pass
         throw Object.assign(new Error('Invalid password'), { statusCode: 401 });
     }
 
-    //* Server-Side Validation for same password, necessary? debatable 
-
-    if (newPassword.length < 8) {
-        throw Object.assign(new Error("password must be atleast 8 characters long."), {statusCode: 403});
+    const arePasswordsSame = oldPassword === newPassword;
+    if (arePasswordsSame) {
+        throw Object.assign(new Error("New password cannot be same as old one."), { statusCode: 400 })
     }
 
-    const hashedPassword = await passwordManager.hash(password);
+    if (newPassword.length < 8) {
+        throw Object.assign(new Error("Password must be atleast 8 characters long."), {statusCode: 403});
+    }
+
+    const hashedPassword = await passwordManager.hash(newPassword);
     user.setPassword(hashedPassword);
     return userRepository.merge(user);
 };
