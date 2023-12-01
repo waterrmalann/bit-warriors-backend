@@ -35,6 +35,6 @@ export async function EditProfile(req, res) {
         const state = await EditUserInteractor(username, req.body, { userRepository });
         res.sendStatus(204);
     } catch (err) {
-        res.status(eerr.statusCode || 500).send({ message: err.message })
+        res.status(err.statusCode || 500).send({ message: err.message })
     }
 }
