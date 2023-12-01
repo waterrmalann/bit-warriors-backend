@@ -7,14 +7,18 @@ export default async (username, newData, { userRepository }) => {
         throw Object.assign(new Error('User does not exist.'), { statusCode: 404 });
     }
 
-    // if (newData.email !== user.email) {
-
-    // }
+    //* note:
+    // In the case of editing `username` or `email`,
+    // Additional validations need to be put in place.
+    // 1. Check if it already exists
+    // 2. Check last time username/email was changed (4 day period)
+    // 3. (mail) Send a magic link to verify
+    // 4. Log the user out? BAD UX
 
     newData.bio && user.setBio(newData.bio);
     newData.clan && user.setClan(newData.clan);
     newData.githubUsername && user.setGithubUsername(newData.githubUsername);
-    newData.linkedInUsername && user.setLinkedInusername(newData.linkedInUsername);
+    newData.linkedInUsername && user.setLinkedInUsername(newData.linkedInUsername);
     newData.xUsername && user.setXUsername(newData.xUsername);
     newData.personalWebsite && user.setPersonalWebsite(newData.personalWebsite);
 
