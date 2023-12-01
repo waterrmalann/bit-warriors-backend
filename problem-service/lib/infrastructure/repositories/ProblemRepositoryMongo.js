@@ -69,8 +69,8 @@ export default class extends IProblemRepository {
         return mapToProblemEntity(mongooseProblem);
     }
 
-    async find(problemsAmount) {
-        const mongooseProblems = await MongooseProblem.find().limit(problemsAmount);
+    async find(limit) {
+        const mongooseProblems = await MongooseProblem.find().limit(limit);
         return mongooseProblems.map((mongooseProblem) => {
             return mapToProblemEntity(mongooseProblem);
         });

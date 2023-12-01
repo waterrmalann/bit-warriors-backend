@@ -5,8 +5,8 @@ export default async (criteria, { problemRepository }) => {
     const problem = await problemRepository.getRandomProblem(criteria);
 
     return {
-        id: problem.id,
-        problemId: problem.id,
+        id: problem._id,
+        problemId: problem.problemId,
         slug: problem.slug,
         title: problem.title,
         description: problem.description,

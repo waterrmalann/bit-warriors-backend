@@ -11,8 +11,8 @@ export default async (problemIdOrSlug, { problemRepository }) => {
     }
 
     return {
-        id: problem.id,
-        problemId: problem.id,
+        id: problem._id,
+        problemId: problem.problemId,
         slug: problem.slug,
         title: problem.title,
         description: problem.description,
