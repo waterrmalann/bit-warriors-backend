@@ -15,12 +15,12 @@ export default async (username, newData, { userRepository }) => {
     // 3. (mail) Send a magic link to verify
     // 4. Log the user out? BAD UX
 
-    newData.bio && user.setBio(newData.bio);
-    newData.clan && user.setClan(newData.clan);
-    newData.githubUsername && user.setGithubUsername(newData.githubUsername);
-    newData.linkedInUsername && user.setLinkedInUsername(newData.linkedInUsername);
-    newData.xUsername && user.setXUsername(newData.xUsername);
-    newData.personalWebsite && user.setPersonalWebsite(newData.personalWebsite);
+    user.setBio(newData.bio);
+    user.setClan(newData.clan);
+    user.setGithubUsername(newData.githubUsername);
+    user.setLinkedInUsername(newData.linkedInUsername);
+    user.setXUsername(newData.xUsername);
+    user.setPersonalWebsite(newData.personalWebsite);
 
     return userRepository.merge(user);
 };
