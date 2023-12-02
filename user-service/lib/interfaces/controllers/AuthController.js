@@ -2,12 +2,14 @@
 import LoginUserInteractor from '../../application/use-cases/LoginUser.js';
 import RegisterUserInteractor from '../../application/use-cases/RegisterUser.js';
 import VerifyUserInteractor from '../../application/use-cases/VerifyUser.js';
+import AuthUserViaGithubInteractor from '../../application/use-cases/AuthUserViaGithub.js';
 // Repositories (Database Abstraction)
 import UserRepository from '../../infrastructure/repositories/UserRepositoryMongo.js';
 // Security (JWT / Hashing Abstraction)
 import AccessTokenManager from '../../infrastructure/security/JwtAccessTokenManager.js';
 import PasswordManager from '../../infrastructure/security/BcryptPasswordManager.js';
 import MFAManager from '../../infrastructure/security/otpMFAManager.js';
+import GithubOAuthManager from '../../infrastructure/security/githubOAuthManager.js';
 // Services (Features Abstraction)
 import MailerService from '../../infrastructure/services/ResendMailerService.js';
 
@@ -16,6 +18,7 @@ const accessTokenManager = new AccessTokenManager();
 const passwordManager = new PasswordManager();
 const mfaManager = new MFAManager();
 const mailerService = new MailerService();
+const githubOAuthManager = new GithubOAuthManager();
 
 export async function LoginUser(req, res) {
     const { username, password } = req.body;
@@ -58,13 +61,39 @@ export async function LoginUserMFA(req, res) {
 export async function RegisterUser(req, res) {
     const { email, username, password } = req.body;
     try {
-        const user = await RegisterUserInteractor(username, email, password, { 
+        const user = await RegisterUserInteractor(username, email, password, {
             userRepository: userRepository,
             accessTokenManager: accessTokenManager,
             mailerService: mailerService,
             passwordManager: passwordManager,
-        })
+        });
+
         res.status(201).send({ message: "registered successfully, verify email " });
+    } catch (err) {
+        res.status(err.statusCode || 500).send({ message: err.message });
+    }
+}
+
+export async function AuthUserViaGithub(req, res) {
+    const { code } = req.body;
+    try {
+        // If they register via Github, they would be automatically logged in.
+        // todo: It should be AuthUserViaOAuth
+        const accessToken = await AuthUserViaGithubInteractor(code, { 
+            userRepository: userRepository,
+            tokenManager: accessTokenManager,
+            OAuthManager: githubOAuthManager
+            // todo: mailerService
+        });
+
+        res.cookie('jwt', accessToken, {
+            httpOnly: true,
+            // secure: process.env.NODE_ENV !== 'development',
+            // sameSite: 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
+        res.sendStatus(201);
     } catch (err) {
         res.status(err.statusCode || 500).send({ message: err.message });
     }

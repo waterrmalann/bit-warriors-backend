@@ -1,5 +1,5 @@
 import express from 'express';
-import { LoginUser, LoginUserMFA, LogoutUser, RegisterUser, VerifyEmail } from '../controllers/AuthController.js';
+import { AuthUserViaGithub, LoginUser, LoginUserMFA, LogoutUser, RegisterUser, VerifyEmail } from '../controllers/AuthController.js';
 import { isAuthenticated } from '../controllers/AuthMiddleware.js';
 const router = express.Router();
 
@@ -9,6 +9,7 @@ router.get('/test', (req, res) => {
 });
 router.post('/login', LoginUser);
 router.post('/register', RegisterUser);
+router.post('/oauth-github', AuthUserViaGithub);
 router.post('/login-mfa', LoginUserMFA);
 router.get('/verify/:verificationCode', VerifyEmail);
 router.get('/logout', LogoutUser);
