@@ -6,11 +6,12 @@ export default function authenticate(req, res, next) {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             req.headers['X-Username'] = decoded.username;
-            next();
+            req.headers['X-Verified'] = "true";
         } catch (err) {
-            res.status(401).send("not authorized, invalid token");
+            req.headers['X-Verified'] = "false";
         }
     } else {
-        res.status(401).send("not authorized, no token");
+        req.headers['X-Verified'] = "false";
     }
+    next();
 }
