@@ -9,7 +9,8 @@ const connectDB = async () => {
         const conn = await mongoose.connect(env.DATABASE_URL);
         console.log(`🍃 [database] Established connection with MongoDB @ ${conn.connection.host}`);
     } catch (error) {
-        console.error(`Error: ${error.message}`);
+        console.error(`🍃 [database]  ${error.message}`);
+        console.log("Are you sure MongoDB is running?");
         process.exit(1);
     }
 };
