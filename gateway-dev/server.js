@@ -7,10 +7,21 @@ import authenticate from './authenticateMiddleware.js';
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+const corsOptions = {
+    //! NextJS Frontend Port
+    origin: 'http://localhost:3000',
+    credentials: true,
+    optionsSuccessStatus: 200
+}
+app.use(cors(corsOptions));
+app.use('*', cors(corsOptions));
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(authenticate);
 
 const services = {
     user: process.env.USER_SERVICE,
