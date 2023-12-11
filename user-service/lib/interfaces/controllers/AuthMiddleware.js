@@ -6,6 +6,8 @@ const userRepository = new UserRepository();
 const accessTokenManager = new AccessTokenManager();
 
 export async function isAuthenticated(req, res, next) {
+    // check x-authenticated === 'true' in req.headers
+    
     let token = req.cookies.jwt;
     try {
         const user = await AuthenticateUserInteractor(token, { 
