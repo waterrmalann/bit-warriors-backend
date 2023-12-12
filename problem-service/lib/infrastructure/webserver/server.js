@@ -9,11 +9,7 @@ dotenv.config();
 
 const createServer = async () => {
     const app = express();
-    app.use(cors({
-        //! NextJS Frontend Port
-        origin: 'http://localhost:3000',
-        credentials: true
-    }));
+
     app.use(cookieParser());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
