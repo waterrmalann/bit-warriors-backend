@@ -1,11 +1,16 @@
 'use strict';
 
-export default async (userId, problemId, code, { problemRepository, testService }) => {
-    if (!userId || !problemId || !code) {
+export default async (userId, problemId, language, code, { testsRepository, testService }) => {
+    if (!userId || !problemId || !language || !code) {
         throw Object.assign(new Error("Bad Input"), { statusCode: 400 })
     }
 
-    // step 1: find problem and test cases
-    // step 2: pass to test service (first three tests)
-    // step 3: return result
+    const problem = await testsRepository.findByProblemId(problemId);
+    const testCases = problem.testCases.slice(0, 3);
+    const functionName = problem.functionName;
+    const preloadedCode = problem.preloadedCode;
+
+    const result = await testService.runTests(language, code, { preloadedCode, functionName, testCases })
+
+    return result;
 };

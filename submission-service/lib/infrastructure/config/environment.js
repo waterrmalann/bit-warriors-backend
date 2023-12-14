@@ -6,8 +6,7 @@ export default (() => {
 
     const env = {
         DATABASE_URL: process.env.DATABASE_URL,
-        JWT_SECRET: process.env.JWT_SECRET,
-        RESEND_API_KEY: process.env.RESEND_API_KEY
+        TEST_SERVICE_URL: process.env.TEST_SERVICE_URL
     };
 
     return env;
