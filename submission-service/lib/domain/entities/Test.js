@@ -1,9 +1,9 @@
 export default class {
-    constructor(id, problemId, title) {
+    constructor(id, problemId) {
         this.id = id;
         this.problemId = problemId;
-        this.title = title;
 
+        this.language = '';
         this.preloadedCode = '';
         this.functionName = '';
         this.testCases = [];
@@ -11,15 +11,14 @@ export default class {
         this._modifiedFields = {};
     }
 
-    setTitle(title) {
-        if (title === this.title) return;
-        this.title = title;
-        this._modifiedFields.title = true;
+    setLanguage(language) {
+        this.language = language;
+        this._modifiedFields.language = true;
         return true;
     }
 
     setPreloadedCode(code) {
-        this.preloadedCode = preloadedCode;
+        this.preloadedCode = code;
         this._modifiedFields.preloadedCode = true;
         return true;
     }

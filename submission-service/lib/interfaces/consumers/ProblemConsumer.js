@@ -1,42 +1,66 @@
-import AddProblemInteractor from '../../application/use-cases/events/AddProblem.js';
-import EditProblemInteractor from '../../application/use-cases/events/EditProblem.js';
-import DeleteProblemInteractor from '../../application/use-cases/events/DeleteProblem.js';
+import AddTestsInteractor from '../../application/use-cases/events/AddTests.js';
+import EditTestsInteractor from '../../application/use-cases/events/EditTests.js';
+import DeleteTestsInteractor from '../../application/use-cases/events/DeleteTests.js';
 import kafka from '../../infrastructure/messaging/setup.js';
-import ProblemRepository from "../../infrastructure/repositories/ProblemRepositoryMongo.js";
+import TestsRepository from "../../infrastructure/repositories/TestsRepositoryMongo.js";
 
-const problemRepository = new ProblemRepository();
+const testsRepository = new TestsRepository();
 
-const consumer = kafka.consumer({ groupId: 'problem-consumer-group' });
+const consumer = kafka.consumer({ groupId: 'problem-test-consumer-group' });
+// const producer = kafka.producer({});
 
 const run = async () => {
 
     await consumer.connect();
+    // await producer.connect();
     console.log("💬 Established connection with Kafka.");
 
-    await consumer.subscribe({ topics: ['PROBLEM_CREATION', 'PROBLEM_UPDATION', 'PROBLEM_DELETION'] });
-    console.log("\t - Subscribed to PROBLEM_CREATION, PROBLEM_UPDATION, PROBLEM_DELETION");
+    await consumer.subscribe({ topics: ['TEST_CREATION', 'TEST_UPDATION', 'PROBLEM_DELETION'] });
+    console.log("\t - Subscribed to TEST_CREATION, TEST_UPDATION, PROBLEM_DELETION");
 
     await consumer.run({
         eachMessage: async ({ topic, partition, message }) => {
             const data = JSON.parse(message.value.toString());
+            let acknowledgeProblemId = null;
             switch (topic) {
-                case "PROBLEM_CREATION": {
-                    console.log("[PROBLEM_CREATION] A new problem was created.");
-                    await AddProblemInteractor(data, { problemRepository });
+                case "TEST_CREATION": {
+                    console.log("[TEST_CREATION] A problem test was created.");
+                    await AddTestsInteractor(data, { testsRepository });
+                    acknowledgeProblemId = data.problemId;
                     break;
                 }
-                case "PROBLEM_UPDATION": {
-                    console.log("[PROBLEM_UPDATION] A problem was updated.");
-                    await EditProblemInteractor(data.id, data.data, { problemRepository });
+                case "TEST_UPDATION": {
+                    console.log("[TEST_UPDATION] A problem test was updated.");
+                    await EditTestsInteractor(data.id, data.data, { testsRepository });
+                    acknowledgeProblemId = data.id;
                     break;
                 }
                 case "PROBLEM_DELETION": {
                     console.log("[PROBLEM_DELETION] A problem was deleted.");
-                    await DeleteProblemInteractor(data.id, { problemRepository });
+                    await DeleteTestsInteractor(data.id, { testsRepository });
+                    acknowledgeProblemId = data.id;
                     break;
                 }
             }
-            console.log(data);
+
+            // const ackMessage = {
+            //     key: 'test_crud_ack', 
+            //     value: JSON.stringify({ 
+            //         from: 'submission-service',
+            //         problemId: acknowledgeProblemId, 
+            //         topic: topic, 
+            //         timestamp: Date.now() 
+            //     }) 
+            // };
+
+            // try {
+            //     await producer.send({
+            //         topic: 'TEST_ACK',
+            //         messages: [ackMessage],
+            //     });
+            // } catch (err) {
+            //     console.error(err);
+            // }
         },
     });
 };

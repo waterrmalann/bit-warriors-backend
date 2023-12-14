@@ -1,4 +1,4 @@
-export default class IProblemRepository {
+export default class ITestsRepository {
     async persist(problemEntity) {
         throw new Error('persist method not implemented');        
     }
