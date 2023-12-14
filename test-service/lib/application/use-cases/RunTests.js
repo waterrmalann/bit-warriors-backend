@@ -1,5 +1,7 @@
 'use strict';
 
+import test from "node:test";
+
 function constructJSFunctionCall(functionName, params) {
     return functionName + '(' + params.join(',') + ');'
 }
@@ -13,8 +15,20 @@ function staticallyAnalyzeForIssues(sourceCode) {
     return true;
 }
 
-export default async (sourceCode, languageId, tests, { codeRunner }) => {
-    if (!sourceCode || !languageId || !tests) {
+function testCasesToCode(tests, functionName) {
+    const testCases = [];
+    for (let test of tests) {
+        testCases.push({ 
+            label: test.label,
+            evaluate: `${functionName}(${test.params.join(', ')})`,
+            expect: test.expect
+        });
+    }
+    return JSON.stringify(testCases);
+}
+
+export default async (sourceCode, languageId, functionName, tests, { codeRunner }) => {
+    if (!sourceCode || !languageId || !tests || !functionName) {
         throw Object.assign(new Error("Bad Input"), { statusCode: 400 })
     }
 
@@ -23,23 +37,52 @@ export default async (sourceCode, languageId, tests, { codeRunner }) => {
     const isCodeOkay = staticallyAnalyzeForIssues(code);
     if (!isCodeOkay) throw Object.assign(new Error("Bad Code", { statusCode: 400 }));
 
-    const stdout = await codeRunner.evaluate(languageId, code);
+    // append test cases
+    code += `\n\ntestCases = ${testCasesToCode(tests, functionName)};\n`;
 
-    // step 1: append test cases to the code
-    // step 2: run the code and collect stdout
-    // step 3: filter the actual output from the code
-    // step 4: 
+    // append compare func
+    code += `\n\nfunction compare(output, expected) {
+        return JSON.stringify(output) === JSON.stringify(expected);
+    }\n\n`
 
-    // function extractOutput(output) {
-    //     let stdout = string.split('\n');
-    //     let actualOutput = [];
-    //     for (let line of stdout) {
-    //         if (line.startsWith('<::container::> ') {
-    //             actualOutput.push(line.slice(15 + 1));
-    //         }
-    //     }
-    //     let actualOutput = stdout.filter(line => line.startsWith('<::container::>'));
-    // }
+    // append test cases driver
+    code += `const __$ces_outputs = [];
+for (let test of testCases) {
+    let testPassed = false;
+    let message = '';
+    try {
+        const result = eval(test.evaluate);
+        testPassed = compare(result, eval(test.expect));
+        if (testPassed) {
+            message = "test passed";
+        } else {
+            message = test.evaluate + " expected " + test.expect + ", received " + result.toString();
+        }
+    } catch (err) {
+        testPassed = false;
+        message = err.message;
+    }
     
-    return stdout;
+    __$ces_outputs.push({ label: test.label, passed: testPassed, message: message });
+}`;
+
+    // append output (assuming v8-sandbox)
+    code += `\nsetResult({ value: __$ces_outputs })`;
+
+    console.log('```\n' + code + '\n```');
+
+    const { success, output, error } = await codeRunner.evaluate(languageId, code);
+
+    if (error) {
+        console.log(error);
+    } else {
+        console.log(output);
+    }
+    
+    if (success) {
+        return output;
+        // which will be in the format of [{label, passed, message}]
+    } else {
+        throw Object.assign(new Error(output || error), { statusCode: 400 });
+    }
 };

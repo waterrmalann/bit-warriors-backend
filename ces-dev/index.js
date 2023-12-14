@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const sandbox = new Sandbox();
 
-app.post('/submissions', async (req, res, next) => {
+app.post('/submissions', async (req, res) => {
     const { base64_encoded } = req.query;
     const { source_code, language_id } = req.body;
     if (base64_encoded === 'true') {
