@@ -32,6 +32,9 @@ dependencies:
   resend:
     specifier: ^2.0.0
     version: 2.0.0
+  slugify:
+    specifier: ^1.6.6
+    version: 1.6.6
   undici:
     specifier: ^5.28.2
     version: 5.28.2
@@ -1413,6 +1416,11 @@ packages:
   /signal-exit@4.1.0:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
+    dev: false
+
+  /slugify@1.6.6:
+    resolution: {integrity: sha512-h+z7HKHYXj6wJU+AnS/+IH8Uh9fdcX1Lrhg1/VMdf9PwoBQXFcXiAdsy2tSK0P6gKwJLXp02r90ahUCqHk9rrw==}
+    engines: {node: '>=8.0.0'}
     dev: false
 
   /sparse-bitfield@3.0.3:

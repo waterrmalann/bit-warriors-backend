@@ -3,6 +3,7 @@ import LoginUserInteractor from '../../application/use-cases/LoginUser.js';
 import RegisterUserInteractor from '../../application/use-cases/RegisterUser.js';
 import VerifyUserInteractor from '../../application/use-cases/VerifyUser.js';
 import AuthUserViaGithubInteractor from '../../application/use-cases/AuthUserViaGithub.js';
+import AuthUserViaGoogleInteractor from '../../application/use-cases/AuthUserViaGoogle.js';
 // Repositories (Database Abstraction)
 import UserRepository from '../../infrastructure/repositories/UserRepositoryMongo.js';
 // Security (JWT / Hashing Abstraction)
@@ -10,6 +11,7 @@ import AccessTokenManager from '../../infrastructure/security/JwtAccessTokenMana
 import PasswordManager from '../../infrastructure/security/BcryptPasswordManager.js';
 import MFAManager from '../../infrastructure/security/otpMFAManager.js';
 import GithubOAuthManager from '../../infrastructure/security/githubOAuthManager.js';
+import GoogleOAuthManager from '../../infrastructure/security/GoogleOAuthManager.js';
 // Services (Features Abstraction)
 import MailerService from '../../infrastructure/services/ResendMailerService.js';
 
@@ -19,6 +21,7 @@ const passwordManager = new PasswordManager();
 const mfaManager = new MFAManager();
 const mailerService = new MailerService();
 const githubOAuthManager = new GithubOAuthManager();
+const googleOAuthManager = new GoogleOAuthManager();
 
 export async function LoginUser(req, res) {
     const { username, password } = req.body;
@@ -83,6 +86,31 @@ export async function AuthUserViaGithub(req, res) {
             userRepository: userRepository,
             tokenManager: accessTokenManager,
             OAuthManager: githubOAuthManager
+            // todo: mailerService
+        });
+
+        res.cookie('jwt', accessToken, {
+            httpOnly: true,
+            // secure: process.env.NODE_ENV !== 'development',
+            // sameSite: 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
+        res.sendStatus(201);
+    } catch (err) {
+        res.status(err.statusCode || 500).send({ message: err.message });
+    }
+}
+
+export async function AuthUserViaGoogle(req, res) {
+    const { code } = req.body;
+    try {
+        // If they register via Github, they would be automatically logged in.
+        // todo: It should be AuthUserViaOAuth
+        const accessToken = await AuthUserViaGoogleInteractor(code, { 
+            userRepository: userRepository,
+            tokenManager: accessTokenManager,
+            OAuthManager: googleOAuthManager
             // todo: mailerService
         });
 
