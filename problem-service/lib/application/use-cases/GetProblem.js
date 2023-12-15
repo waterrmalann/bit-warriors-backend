@@ -5,7 +5,7 @@ export default async (problemIdOrSlug, { problemRepository }) => {
         throw Object.assign(new Error("Problem Not Found"), { statusCode: 404 })
     }
 
-    const problem = await problemRepository.findById(problemIdOrSlug) ?? await problemRepository.findBySlug(problemIdOrSlug);
+    const problem = await problemRepository.findByProblemId(problemIdOrSlug) ?? await problemRepository.findBySlug(problemIdOrSlug);
     if (!problem) {
         throw Object.assign(new Error("Problem Not Found"), { statusCode: 404 })
     }
@@ -21,9 +21,8 @@ export default async (problemIdOrSlug, { problemRepository }) => {
         examples: problem.examples,
         tags: problem.tags,
         hint: problem.hint,
-        upvotes: problem.votes.length,
-        downvotes: problem.votes.length,
-        
+        upvotes: problem.upvotes.length,
+        downvotes: problem.downvotes.length,
         // createdAt, modiifedAt
     };
 };

@@ -22,12 +22,12 @@ export default async (code, { userRepository, tokenManager, OAuthManager }) => {
         // Case 2: New User : Create Account & Log In
 
         // Case 2.1: Username unavailable : Append _gh
-        const usernameExists = userRepository.findByUsername(user.username)
+        const usernameExists = await userRepository.findByUsername(user.username)
         if (usernameExists) {
             user.username + '_gh';
         }
         
-        const newUser = userRepository.persist(user);
+        const newUser = await userRepository.persist(user);
 
         const accessToken = tokenManager.generate({ id: newUser.id, username: newUser.username, email: newUser.email }, '7d');
         return accessToken;
