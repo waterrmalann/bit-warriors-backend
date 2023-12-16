@@ -32,7 +32,26 @@ export default async (sourceCode, languageId, functionName, tests, { codeRunner 
         throw Object.assign(new Error("Bad Input"), { statusCode: 400 })
     }
 
-    let code = sourceCode;
+    // preloaded
+    let code = `function __$ces_replacer(key, value) {
+        if (value === undefined) {
+          return 'undefined';
+        }
+        if (Number.isNaN(value)) {
+          return 'NaN';
+        }
+        if (value === Infinity) {
+          return 'Infinity';
+        }
+        if (value === -Infinity) {
+          return '-Infinity';
+        }
+        return value;
+    }\n\n// begin user submitted code\n`
+
+    code += sourceCode;
+
+    code += '\n// end user submitted code'
 
     const isCodeOkay = staticallyAnalyzeForIssues(code);
     if (!isCodeOkay) throw Object.assign(new Error("Bad Code", { statusCode: 400 }));
@@ -56,14 +75,14 @@ for (let test of testCases) {
         if (testPassed) {
             message = "test passed";
         } else {
-            message = test.evaluate + " expected " + test.expect + ", received " + result.toString();
+            message = test.evaluate + " expected " + test.expect + ", received " + JSON.stringify(result, __$ces_replacer);
         }
     } catch (err) {
         testPassed = false;
         message = err.message;
     }
     
-    __$ces_outputs.push({ label: test.label, passed: testPassed, message: message });
+    __$ces_outputs.push({ label: test.label, passed: testPassed, test: test.evaluate + " should equal " + test.expect, message: message });
 }`;
 
     // append output (assuming v8-sandbox)
