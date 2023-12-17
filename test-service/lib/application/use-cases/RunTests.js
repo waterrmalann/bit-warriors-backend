@@ -53,8 +53,8 @@ export default async (sourceCode, languageId, functionName, tests, { codeRunner 
 
     code += '\n// end user submitted code'
 
-    const isCodeOkay = staticallyAnalyzeForIssues(code);
-    if (!isCodeOkay) throw Object.assign(new Error("Bad Code", { statusCode: 400 }));
+    // const isCodeOkay = staticallyAnalyzeForIssues(code);
+    // if (!isCodeOkay) throw Object.assign(new Error("Bad Code", { statusCode: 400 }));
 
     // append test cases
     code += `\n\ntestCases = ${testCasesToCode(tests, functionName)};\n`;
@@ -75,14 +75,14 @@ for (let test of testCases) {
         if (testPassed) {
             message = "test passed";
         } else {
-            message = test.evaluate + " expected " + test.expect + ", received " + JSON.stringify(result, __$ces_replacer);
+            message = "received " + JSON.stringify(result, __$ces_replacer);
         }
     } catch (err) {
         testPassed = false;
         message = err.message;
     }
-    
-    __$ces_outputs.push({ label: test.label, passed: testPassed, test: test.evaluate + " should equal " + test.expect, message: message });
+    let __$ces_test = testPassed ? (test.evaluate + " equals " + test.expect) : (test.evaluate + " expected " + test.expect);
+    __$ces_outputs.push({ label: test.label, passed: testPassed, test: __$ces_test, message: message });
 }`;
 
     // append output (assuming v8-sandbox)
