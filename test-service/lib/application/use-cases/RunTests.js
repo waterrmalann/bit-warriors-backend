@@ -1,6 +1,6 @@
 'use strict';
 
-import test from "node:test";
+import crypto from 'crypto';
 
 function constructJSFunctionCall(functionName, params) {
     return functionName + '(' + params.join(',') + ');'
@@ -32,8 +32,10 @@ export default async (sourceCode, languageId, functionName, tests, { codeRunner 
         throw Object.assign(new Error("Bad Input"), { statusCode: 400 })
     }
 
+    const reservedVariablePrefix = crypto.randomBytes(5).toString('hex');
+
     // preloaded
-    let code = `function __$ces_replacer(key, value) {
+    let code = `function ${reservedVariablePrefix}_replacer(key, value) {
         if (value === undefined) {
           return 'undefined';
         }
@@ -65,7 +67,7 @@ export default async (sourceCode, languageId, functionName, tests, { codeRunner 
     }\n\n`
 
     // append test cases driver
-    code += `const __$ces_outputs = [];
+    code += `const ${reservedVariablePrefix}_outputs = [];
 for (let test of testCases) {
     let testPassed = false;
     let message = '';
@@ -75,18 +77,18 @@ for (let test of testCases) {
         if (testPassed) {
             message = "test passed";
         } else {
-            message = "received " + JSON.stringify(result, __$ces_replacer);
+            message = "received " + JSON.stringify(result, ${reservedVariablePrefix}_replacer);
         }
     } catch (err) {
         testPassed = false;
         message = err.message;
     }
-    let __$ces_test = testPassed ? (test.evaluate + " equals " + test.expect) : (test.evaluate + " expected " + test.expect);
-    __$ces_outputs.push({ label: test.label, passed: testPassed, test: __$ces_test, message: message });
+    let ${reservedVariablePrefix}_test = testPassed ? (test.evaluate + " equals " + test.expect) : (test.evaluate + " expected " + test.expect);
+    ${reservedVariablePrefix}_outputs.push({ label: test.label, passed: testPassed, test: ${reservedVariablePrefix}_test, message: message });
 }`;
 
     // append output (assuming v8-sandbox)
-    code += `\nsetResult({ value: __$ces_outputs })`;
+    code += `\nsetResult({ value: ${reservedVariablePrefix}_outputs })`;
 
     console.log('```\n' + code + '\n```');
 
