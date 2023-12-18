@@ -24,15 +24,18 @@ export async function RunProblem(req, res) {
 }
 
 export async function SubmitProblem(req, res) {
-    throw 'not implemented';
-    // const { code, language } = req.body;
-    // const { problemId } = req.params;
-    // const { userId } = req.headers['x-user-id']
+    const { code, language } = req.body;
+    const { problemId } = req.params;
+    const userId = req.headers['x-username'] || "anonymous";
 
-    // try {
-    //     const result = await SubmitProblemInteractor(userId, problemId, code, { userStatsRepository, problemRepository, testService });
-    //     res.status(200).send(result);
-    // } catch (err) {
-    //     res.status(err.statusCode || 500).send({ message: err.message });
-    // }
+    try {
+        const result = await SubmitProblemInteractor(userId, problemId, language, code, {
+            userStatsRepository: null,
+            testsRepository: testsRepository, 
+            testService: testService 
+         });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(err.statusCode || 500).send({ message: err.message });
+    }
 }

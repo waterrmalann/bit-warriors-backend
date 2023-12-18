@@ -13,6 +13,7 @@ export default class TestService extends ITestService {
             sourceCode: code,
             preloadedCode,
             tests: testCases
+            // failFast?
         });
         console.log(testBody);
         try {
@@ -24,9 +25,9 @@ export default class TestService extends ITestService {
                 body: testBody
             });
 
-            if (!result.ok) throw new Error(result.message);
-
             const data = await result.json();
+
+            if (!result.ok) throw new Error(data.message);
 
             return { success: true, results: [
                 ...data // { label: string, passed: boolean, message: string }
