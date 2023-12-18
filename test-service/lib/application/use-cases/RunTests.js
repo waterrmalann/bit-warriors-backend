@@ -32,7 +32,7 @@ export default async (sourceCode, languageId, functionName, tests, { codeRunner 
         throw Object.assign(new Error("Bad Input"), { statusCode: 400 })
     }
 
-    const reservedVariablePrefix = crypto.randomBytes(5).toString('hex');
+    const reservedVariablePrefix = 'x' + crypto.randomBytes(5).toString('hex');
 
     // preloaded
     let code = `function ${reservedVariablePrefix}_replacer(key, value) {
@@ -59,7 +59,7 @@ export default async (sourceCode, languageId, functionName, tests, { codeRunner 
     // if (!isCodeOkay) throw Object.assign(new Error("Bad Code", { statusCode: 400 }));
 
     // append test cases
-    code += `\n\ntestCases = ${testCasesToCode(tests, functionName)};\n`;
+    code += `\n\n${reservedVariablePrefix}_testCases = ${testCasesToCode(tests, functionName)};\n`;
 
     // append compare func
     code += `\n\nfunction compare(output, expected) {
@@ -68,7 +68,7 @@ export default async (sourceCode, languageId, functionName, tests, { codeRunner 
 
     // append test cases driver
     code += `const ${reservedVariablePrefix}_outputs = [];
-for (let test of testCases) {
+for (let test of ${reservedVariablePrefix}_testCases) {
     let testPassed = false;
     let message = '';
     try {
