@@ -5,7 +5,7 @@ export default function authenticate(req, res, next) {
     if (token) {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            req.headers['X-Username'] = decoded.username;
+            req.headers['X-Username'] = decoded.username ?? '';
             req.headers['X-Authenticated'] = "true";
         } catch (err) {
             req.headers['X-Verified'] = "false";
