@@ -46,6 +46,7 @@ const run = async () => {
             const ackMessage = {
                 key: 'problem_crud_ack', 
                 value: JSON.stringify({ 
+                    from: 'problem-service',
                     problemId: acknowledgeProblemId, 
                     topic: topic, 
                     timestamp: Date.now() 
