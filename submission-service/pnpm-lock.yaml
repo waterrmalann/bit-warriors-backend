@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@bit-warriors/ai-feedback':
+    specifier: ^1.0.0
+    version: 1.0.0
   '@bit-warriors/status':
     specifier: ^1.0.1
     version: 1.0.1
@@ -35,6 +38,12 @@ dependencies:
 
 packages:
 
+  /@bit-warriors/ai-feedback@1.0.0:
+    resolution: {integrity: sha512-aNOYYp7mVBZEdz+qExpqVvTCMJvpM2cmJgucedCxmKpMevmM0iSRQvqFQ4Iil99VNn/Rh+Ocy4vAcShnoj1BKQ==}
+    dependencies:
+      '@google/generative-ai': 0.1.3
+    dev: false
+
   /@bit-warriors/status@1.0.1:
     resolution: {integrity: sha512-cF3z8JHHTRgKOCGKNBLIORB+kjP8EKyIoSB+fgbdHF5ARM+xP3Mi0WLGyklAadN5YNLS2FygUOCCenhfZeHv5Q==}
     dependencies:
@@ -49,6 +58,11 @@ packages:
       - snappy
       - socks
       - supports-color
+    dev: false
+
+  /@google/generative-ai@0.1.3:
+    resolution: {integrity: sha512-Cm4uJX1sKarpm1mje/MiOIinM7zdUUrQp/5/qGPAgznbdd/B9zup5ehT6c1qGqycFcSopTA1J1HpqHS5kJR8hQ==}
+    engines: {node: '>=18.0.0'}
     dev: false
 
   /@isaacs/cliui@8.0.2:
