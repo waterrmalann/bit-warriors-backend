@@ -6,7 +6,8 @@ export default (() => {
 
     const env = {
         DATABASE_URL: process.env.DATABASE_URL,
-        TEST_SERVICE_URL: process.env.TEST_SERVICE_URL
+        TEST_SERVICE_URL: process.env.TEST_SERVICE_URL,
+        GEMINI_API_KEY: process.env.GEMINI_API_KEY,
     };
 
     return env;
