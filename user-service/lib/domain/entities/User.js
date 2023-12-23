@@ -35,6 +35,18 @@ export default class {
         this._modifiedFields = {};
     }
 
+    addScore(score) {
+        this.totalScore += score;
+
+        this._modifiedFields.totalScore = true;
+    }
+
+    incrementSubmission() {
+        this.totalSubmissions++;
+
+        this._modifiedFields.totalSubmissions = true;
+    }
+
     setPassword(password) {
         this.password = password;
 
