@@ -1,4 +1,4 @@
-export default class {
+export default class User {
     constructor(id = null, username) {
         this.id = id;
         this.username = username;
@@ -23,7 +23,6 @@ export default class {
 
         this._modifiedFields.totalScore = true;
     }
-
 
     getModifiedFields() {
         return this._modifiedFields;
