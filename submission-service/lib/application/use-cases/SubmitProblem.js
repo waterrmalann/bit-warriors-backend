@@ -1,6 +1,8 @@
 // @ts-check
 'use strict';
 
+import Submission from '../../domain/entities/Submission';
+
 /**
  * Handles a code submission for a given problem, including testing and persistence.
  * 
@@ -43,16 +45,12 @@ export default async (
 
     // Let's weed off attempts to submit an exact same solution as earlier.
     const pastSubmissions = await submissionRepository.findByProblemAndUser(problemId, userId) ?? [];
-    let sameAsPreviousSubmission = false;
+
     for (let submission of pastSubmissions) {
         // todo: This could strip away comments, whitespace (ie: minify) and do a proper static analysis.
         if (submission.code === code /* && submission.language === language */) {
-            sameAsPreviousSubmission = true;
+            throw Object.assign(new Error("Duplicate submission."), { statusCode: 409 });
         }
-    }
-
-    if (sameAsPreviousSubmission) {
-        throw Object.assign(new Error("Duplicate submission."), { statusCode: 409 });
     }
 
     const out = await testService.runTests(language, code, { preloadedCode, functionName, testCases })
@@ -69,6 +67,9 @@ export default async (
     }
 
     // All tests passed.
+    const submission = new Submission(null, problemId, language, code, '0m', '0m', userId, Date.now());
+    await submissionRepository.persist(submission);
+
     const user = await userRepository.findByUsername(userId);
     if (!user) {
         throw Object.assign(new Error("User not found"), { statusCode: 404 });
@@ -89,6 +90,7 @@ export default async (
         //         throw Object.assign(new Error(`problem.difficulty was ${problem.difficulty}`));
         // }
         user.addScore(50);
+        user.incrementSubmission();
     }
     await userRepository.merge(user);
 

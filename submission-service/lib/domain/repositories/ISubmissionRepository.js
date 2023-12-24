@@ -1,6 +1,12 @@
 import Submission from "../entities/Submission";
 
 export default class ISubmissionRepository {
+    /**
+     * Persists a Submission entity to the actual database.
+     * @param {Submission} submissionEntity - The business entity.
+     *
+     * @returns {Promise<Submission | null>}
+    */
     async persist(submissionEntity) {
         throw new Error('persist method not implemented');        
     }
@@ -17,9 +23,9 @@ export default class ISubmissionRepository {
         throw new Error("findById method not implemented");
     }
 
-    async findByProblemId(problemId) {
-        throw new Error("findByProblemId method not implemented");
-    }
+    // async findBySubmissionId(submissionId) {
+    //     throw new Error("findBySubmissionId method not implemented");
+    // }
 
     /**
      * Finds a submission by user and problem.

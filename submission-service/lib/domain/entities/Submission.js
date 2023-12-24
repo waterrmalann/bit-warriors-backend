@@ -1,5 +1,5 @@
 export default class Submission {
-    constructor(id, {problemId, language, code, runtime, memory}, userId, timestamp = Date.now()) {
+    constructor(id, problemId, language, code, runtime, memory, userId, timestamp = Date.now()) {
         this.id = id;
         this.problemId = problemId;
         
@@ -9,7 +9,16 @@ export default class Submission {
         this.code = code;
         this.runtime = runtime;
         this.memory = memory;
+
+        this.feedback = '';
+
         this._modifiedFields = {};
+    }
+
+    setFeedback(feedback) {
+        this.feedback = feedback;
+        this._modifiedFields.feedback = true;
+        return true;
     }
 
     setLanguage(language) {

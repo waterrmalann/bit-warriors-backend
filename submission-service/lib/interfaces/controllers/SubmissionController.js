@@ -3,9 +3,13 @@ import SubmitProblemInteractor from '../../application/use-cases/SubmitProblem.j
 
 import TestService from '../../infrastructure/services/TestService.js';
 import TestsRepository from '../../infrastructure/repositories/TestsRepositoryMongo.js';
+import SubmissionRepository from '../../infrastructure/repositories/SubmissionRepositoryMongo.js';
+import UserRepository from '../../infrastructure/repositories/UserRepositoryMongo.js';
 
 const testService = new TestService();
 const testsRepository = new TestsRepository();
+const submissionRepository = new SubmissionRepository();
+const userRepository = new UserRepository();
 
 export async function RunProblem(req, res) {
     const { code, language } = req.body;
@@ -30,7 +34,8 @@ export async function SubmitProblem(req, res) {
 
     try {
         const result = await SubmitProblemInteractor(userId, problemId, language, code, {
-            userStatsRepository: null,
+            submissionRepository: submissionRepository,
+            userRepository: userRepository,
             testsRepository: testsRepository, 
             testService: testService 
          });
