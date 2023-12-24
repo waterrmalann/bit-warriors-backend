@@ -1,18 +1,23 @@
 import AddTestsInteractor from '../../application/use-cases/events/AddTests.js';
 import EditTestsInteractor from '../../application/use-cases/events/EditTests.js';
 import DeleteTestsInteractor from '../../application/use-cases/events/DeleteTests.js';
-import kafka from '../../infrastructure/messaging/setup.js';
 import TestsRepository from "../../infrastructure/repositories/TestsRepositoryMongo.js";
+import kafka from '../../infrastructure/messaging/setup.js';
 
 const testsRepository = new TestsRepository();
 
 const consumer = kafka.consumer({ groupId: 'problem-test-consumer-group' });
-// const producer = kafka.producer({});
+const producer = kafka.producer();
+
+export const produce = async (topic, payload) => {
+    console.log(`Produced to ${topic} of ${payload}`)
+    return await producer.send({ topic: topic, messages: [JSON.stringify(payload)] })
+}
 
 const run = async () => {
 
     await consumer.connect();
-    // await producer.connect();
+    await producer.connect();
     console.log("💬 Established connection with Kafka.");
 
     await consumer.subscribe({ topics: ['TEST_CREATION', 'TEST_UPDATION', 'PROBLEM_DELETION'] });

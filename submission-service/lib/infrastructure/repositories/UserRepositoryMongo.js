@@ -3,8 +3,14 @@
 import User from '../../domain/entities/User.js';
 import MongooseUser from '../database/models/User.Model.js';
 import IUserRepository from '../../domain/repositories/IUserRepository.js';
+import { produce } from '../../interfaces/consumers/ProblemConsumer.js';
 
 export default class extends IUserRepository {
+    /**
+     * 
+     * @param {User} userEntity 
+     * @returns {User}
+     */
     async persist(userEntity) {
         const { username } = userEntity;
         const mongooseUser = new MongooseUser({ username });
@@ -12,6 +18,11 @@ export default class extends IUserRepository {
         return mapToUserEntity(mongooseUser);
     }
 
+    /**
+     * 
+     * @param {User} userEntity 
+     * @returns {Boolean}
+     */
     async merge(userEntity) {
         const modifiedFields = userEntity.getModifiedFields();
         if (Object.keys(modifiedFields).length === 0) {
@@ -26,7 +37,11 @@ export default class extends IUserRepository {
         }
 
         await MongooseUser.findByIdAndUpdate(userEntity.id, updateFields);
-
+        modifiedFields.totalScore && await produce('USER_STATS', { 
+            userId: userEntity.username, 
+            totalSubmissions: userEntity.totalSubmissions, 
+            totalScore: userEntity.totalScore 
+        });
         userEntity.clearModifiedFields();
         return true;
     }
