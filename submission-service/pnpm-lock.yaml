@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@bit-warriors/ai-feedback':
-    specifier: ^1.0.0
-    version: 1.0.0
+    specifier: ^1.0.1
+    version: 1.0.1
   '@bit-warriors/status':
     specifier: ^1.0.1
     version: 1.0.1
@@ -30,16 +30,16 @@ dependencies:
     specifier: ^2.2.4
     version: 2.2.4
   mongoose:
-    specifier: ^8.0.0
-    version: 8.0.2
+    specifier: ^8.0.3
+    version: 8.0.3
   resend:
     specifier: ^2.0.0
     version: 2.0.0
 
 packages:
 
-  /@bit-warriors/ai-feedback@1.0.0:
-    resolution: {integrity: sha512-aNOYYp7mVBZEdz+qExpqVvTCMJvpM2cmJgucedCxmKpMevmM0iSRQvqFQ4Iil99VNn/Rh+Ocy4vAcShnoj1BKQ==}
+  /@bit-warriors/ai-feedback@1.0.1:
+    resolution: {integrity: sha512-r7d8Ur6rEXOSS3Xad3+Uw7rQUPydiKaA/aIl0+/LbuH81lIvKYDXriaRHxz98Rdajt8wyGNXyXHZtU8o3ua/wQ==}
     dependencies:
       '@google/generative-ai': 0.1.3
     dev: false
@@ -48,7 +48,7 @@ packages:
     resolution: {integrity: sha512-cF3z8JHHTRgKOCGKNBLIORB+kjP8EKyIoSB+fgbdHF5ARM+xP3Mi0WLGyklAadN5YNLS2FygUOCCenhfZeHv5Q==}
     dependencies:
       express: 4.18.2
-      mongoose: 8.0.2
+      mongoose: 8.0.3
     transitivePeerDependencies:
       - '@aws-sdk/credential-providers'
       - '@mongodb-js/zstd'
@@ -129,8 +129,8 @@ packages:
       selderee: 0.11.0
     dev: false
 
-  /@types/node@20.10.0:
-    resolution: {integrity: sha512-D0WfRmU9TQ8I9PFx9Yc+EBHw+vSpIub4IDvQivcp26PtPrdMGAq5SDcpXEo/epqa/DXotVpekHiLNTg3iaKXBQ==}
+  /@types/node@20.10.5:
+    resolution: {integrity: sha512-nNPsNE65wjMxEKI93yOP+NPGGBJz/PoN3kZsVLee0XMiJolxSekEVD8wRwBUBqkwc7UWop0edW50yrCQW4CyRw==}
     dependencies:
       undici-types: 5.26.5
     dev: false
@@ -142,7 +142,7 @@ packages:
   /@types/whatwg-url@8.2.2:
     resolution: {integrity: sha512-FtQu10RWgn3D9U4aazdwIE2yzphmTJREDqNdODHrbrZmmMqI0vMheC/6NE/J1Yveaj8H+ela+YwWTjq5PGmuhA==}
     dependencies:
-      '@types/node': 20.10.0
+      '@types/node': 20.10.5
       '@types/webidl-conversions': 7.0.3
     dev: false
 
@@ -974,8 +974,8 @@ packages:
       mongodb-connection-string-url: 2.6.0
     dev: false
 
-  /mongoose@8.0.2:
-    resolution: {integrity: sha512-Vsi9GzTXjdBVzheT1HZOZ2jHNzzR9Xwb5OyLz/FvDEAhlwrRnXnuqJf0QHINUOQSm7aoyvnPks0q85HJkd6yDw==}
+  /mongoose@8.0.3:
+    resolution: {integrity: sha512-LJRT0yP4TW14HT4r2RkxqyvoTylMSzWpl5QOeVHTnRggCLQSpkoBdgbUtORFq/mSL2o9cLCPJz+6uzFj25qbHw==}
     engines: {node: '>=16.20.1'}
     dependencies:
       bson: 6.2.0

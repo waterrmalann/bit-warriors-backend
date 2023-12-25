@@ -10,15 +10,20 @@ export default async (submissionId, { submissionRepository, problemRepository, a
         throw Object.assign(new Error("Submission not found."), { statusCode: 404 });
     }
 
-    const problem = await problemRepository.findByProblemId(submission.problemId);
-    if (!problem) {
-        throw Object.assign(new Error("Problem not found."), { statusCode: 404 });
-    }
+    // const problem = await problemRepository.findByProblemId(submission.problemId);
+    // if (!problem) {
+    //     throw Object.assign(new Error("Problem not found."), { statusCode: 404 });
+    // }
+    const problem = await fetch(`http://localhost:3003/${submission.problemId}`);
+    const statement = await problem.json();
 
-    const feedback = await aiEngine.getFeedback(problem.statement, submission.code);
+    const feedback = await aiEngine.getFeedback(statement.description, submission.code);
     if (!feedback) {
         throw Object.assign(new Error("Could not generate any feedback."), { statusCode: 500 })
     }
+
+    submission.setFeedback(feedback);
+    await submissionRepository.merge(submission);
 
     return feedback;
 };
