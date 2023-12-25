@@ -1,4 +1,4 @@
-import Submission from "../entities/Submission";
+import Submission from "../entities/Submission.js";
 
 export default class ISubmissionRepository {
     /**

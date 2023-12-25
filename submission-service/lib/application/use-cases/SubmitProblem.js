@@ -1,7 +1,8 @@
 // @ts-check
 'use strict';
 
-import Submission from '../../domain/entities/Submission';
+import Submission from '../../domain/entities/Submission.js';
+import User from '../../domain/entities/User.js';
 
 /**
  * Handles a code submission for a given problem, including testing and persistence.
@@ -70,7 +71,7 @@ export default async (
     const submission = new Submission(null, problemId, language, code, '0m', '0m', userId, Date.now());
     await submissionRepository.persist(submission);
 
-    const user = await userRepository.findByUsername(userId);
+    let user = await userRepository.findByUsername(userId) ?? await userRepository.persist(new User(null, userId));;
     if (!user) {
         throw Object.assign(new Error("User not found"), { statusCode: 404 });
     }
