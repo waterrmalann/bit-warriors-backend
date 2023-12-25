@@ -69,7 +69,7 @@ export default async (
 
     // All tests passed.
     const submission = new Submission(null, problemId, language, code, '0m', '0m', userId, Date.now());
-    await submissionRepository.persist(submission);
+    const sub = await submissionRepository.persist(submission);
 
     let user = await userRepository.findByUsername(userId) ?? await userRepository.persist(new User(null, userId));;
     if (!user) {
@@ -91,9 +91,9 @@ export default async (
         //         throw Object.assign(new Error(`problem.difficulty was ${problem.difficulty}`));
         // }
         user.addScore(50);
-        user.incrementSubmission();
     }
+    user.incrementSubmission();
     await userRepository.merge(user);
 
-    return { success: true, results: [], totalTests: totalTests, testsPassed: totalTests, runtime: '0ms', memory: '0mb' };
+    return { submissionId: sub?.id, success: true, results: [], totalTests: totalTests, testsPassed: totalTests, runtime: '0ms', memory: '0mb' };
 };

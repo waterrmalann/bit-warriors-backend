@@ -37,7 +37,7 @@ export default class extends IUserRepository {
         }
 
         await MongooseUser.findByIdAndUpdate(userEntity.id, updateFields);
-        modifiedFields.totalScore && await produce('USER_STATS', 'stats_update', { 
+        modifiedFields.totalSubmissions && await produce('USER_STATS', 'stats_update', { 
             userId: userEntity.username, 
             totalSubmissions: userEntity.totalSubmissions, 
             totalScore: userEntity.totalScore 

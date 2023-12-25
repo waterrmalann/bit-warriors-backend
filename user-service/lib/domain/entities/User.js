@@ -35,14 +35,14 @@ export default class {
         this._modifiedFields = {};
     }
 
-    addScore(score) {
-        this.totalScore += score;
+    setScore(score) {
+        this.totalScore = score;
 
         this._modifiedFields.totalScore = true;
     }
 
-    incrementSubmission() {
-        this.totalSubmissions++;
+    setSubmissions(submissions) {
+        this.totalSubmissions = submissions;
 
         this._modifiedFields.totalSubmissions = true;
     }

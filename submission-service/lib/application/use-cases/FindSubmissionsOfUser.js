@@ -1,7 +1,7 @@
 // @ts-check
 'use strict';
 
-import Submission from '../../domain/entities/Submission';
+import Submission from '../../domain/entities/Submission.js';
 
 /**
  * Fetches a list of submissions by specified user for a specific problem.

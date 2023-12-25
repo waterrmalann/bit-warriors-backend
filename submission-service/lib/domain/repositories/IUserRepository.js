@@ -1,4 +1,13 @@
+import User from '../entities/User.js';
+
 export default class IUserRepository {
+    /**
+     * Persist an user entity to the database.
+     * 
+     * @param {User} userEntity - The entity of the user to persist.
+     *
+     * @returns {Promise<User | null>}
+    */
     async persist(userEntity) {
         throw new Error('persist method not implemented');
     }
@@ -17,7 +26,6 @@ export default class IUserRepository {
 
     /**
      * Finds a user by their username.
-     * @typedef {import('../entities/User').default} User
      * 
      * @param {string} username - The username of the user to find.
      *
