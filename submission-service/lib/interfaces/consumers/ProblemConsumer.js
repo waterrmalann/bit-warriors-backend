@@ -9,9 +9,9 @@ const testsRepository = new TestsRepository();
 const consumer = kafka.consumer({ groupId: 'problem-test-consumer-group' });
 const producer = kafka.producer();
 
-export const produce = async (topic, payload) => {
+export const produce = async (topic, key, payload) => {
     console.log(`Produced to ${topic} of ${payload}`)
-    return await producer.send({ topic: topic, messages: [JSON.stringify(payload)] })
+    return await producer.send({ topic: topic, messages: [{ key: key, value: JSON.stringify(payload)}] })
 }
 
 const run = async () => {
