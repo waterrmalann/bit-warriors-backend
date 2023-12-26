@@ -19,12 +19,11 @@
 - **Gateway:** The gateway is responsible for accepting the initial request, authenticating it (using JWT), and proxying it to other services.
 - [**Admin Service:**](https://github.com/waterrmalann/bit-warriors-admin) A superuser service that lets a sysop manage and talk to individual services. This is also where problems and learning paths are added. Also serves its own frontend (built using React & Vite).
 - [**User Service:**](/user-service/) Everything from initial authorization to user profiles, follower relationships and inboxes are part of the user service.
-- **Problem Service:** Coding challenges and learning paths are served and kept track of by this service.
-- **Submission Service:** Handling the submission, analysis, testing, and ranking of user submitted code.
-    - **Test Service (Internal):** Responsible for statically analysing and executing abitrary code using the Code Execution Sandbox. Also keeps track of test cases for each question.
-    - **AI Service (Internal):** An experimental service that utilizes an AI model to grade and generate feedback on code. 
-- **Discuss Service:**  Submission and retrieval of writeups, comments, and discussions on problems.
-- **Notification Service (Internal):** General purpose server solely responsible for delivering email notifications and alerts. 
+- [**Problem Service:**](/problem-service/) Coding challenges and learning paths are served and kept track of by this service.
+- [**Submission Service:**](/submission-service/) Handling the submission, analysis, testing, and ranking of user submitted code.
+    - [**Test Service (Internal):**](/test-service/) Responsible for statically analysing and executing abitrary code using the Code Execution Sandbox. Also keeps track of test cases for each question.
+- ~~**Discuss Service:**  Submission and retrieval of writeups, comments, and discussions on problems.~~
+- ~~**Notification Service (Internal):** General purpose server solely responsible for delivering email notifications and alerts.~~
 - **Code Execution Sandbox (Internal):** An isolated, virtualized, container holding various language runtimes for safe execution of abitrary code.
 
 ## 🚀 Getting Started
