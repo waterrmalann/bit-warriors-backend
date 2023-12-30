@@ -3,7 +3,7 @@ import ICodeRunnerService from "../../domain/services/ICodeRunnerService.js";
 export default class extends ICodeRunnerService {
     async evaluate(language, code) {
         try {
-            const result = await fetch("http://localhost:3600/submissions", { 
+            const result = await fetch(environment.CES_URL, { 
                 method: "POST",    
                 headers: { "Content-Type": "application/json"},
                 body: JSON.stringify({
