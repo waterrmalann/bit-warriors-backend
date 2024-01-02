@@ -23,10 +23,11 @@ RUN pnpm prune --prod
 FROM base as deploy
 
 WORKDIR /app
-# COPY --from=build /app/dist/ ./dist/
+COPY --from=build /app/index.js ./index.js
+COPY --from=build /app/package.json ./package.json
+COPY --from=build /app/lib/ ./lib/
 COPY --from=build /app/node_modules ./node_modules
 
-# EXPOSE 3000
+EXPOSE 3001
 
-CMD [ "node", "server.js" ]
-# dist/server.js
+CMD [ "node", "index.js" ]
