@@ -1,8 +1,9 @@
 import { Kafka } from 'kafkajs';
+import environment from '../config/environment';
 
 const kafka = new Kafka({
     clientId: 'problem-service',
-    brokers: ['localhost:29092'],
+    brokers: environment.KAFKA_BROKERS,
 });
 
 export default kafka;
