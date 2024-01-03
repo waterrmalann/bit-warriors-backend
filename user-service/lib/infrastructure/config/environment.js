@@ -14,7 +14,9 @@ export default (() => {
         GITHUB_OAUTH_CLIENT_SECRET: process.env.GITHUB_OAUTH_CLIENT_SECRET,
 
         GOOGLE_OAUTH_CLIENT_ID: process.env.GOOGLE_OAUTH_CLIENT_ID,
-        GOOGLE_OAUTH_CLIENT_SECRET: process.env.GOOGLE_OAUTH_CLIENT_SECRET
+        GOOGLE_OAUTH_CLIENT_SECRET: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+        KAFKA_BROKERS: process.env.KAFKA_BROKERS.split(','),
+        FRONTEND_URL: process.env.FRONTEND_URL
     };
 
     return env;

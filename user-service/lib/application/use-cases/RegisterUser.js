@@ -1,6 +1,7 @@
 'use strict';
 
 import User from '../../domain/entities/User.js';
+import environment from '../../infrastructure/config/environment.js';
 
 export default async (username, email, password, { userRepository, accessTokenManager, mailerService, passwordManager }) => {
   if (username.length < 4) {
@@ -12,7 +13,7 @@ export default async (username, email, password, { userRepository, accessTokenMa
   }
   
   const verificationCode = await accessTokenManager.generate({ username: username }, '1h');
-  const verificationLink = `http://localhost:3000/verify/${verificationCode}`;
+  const verificationLink = `${environment.FRONTEND_URL}/verify/${verificationCode}`;
   const mail = await mailerService.sendMail({
     to: email,
     subject: "<BitWarriors/> :: Email Verification",

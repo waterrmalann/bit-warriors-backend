@@ -14,7 +14,7 @@ export default class extends IOAuthManager {
         query.append('code', code);
         query.append('client_id', environment.GOOGLE_OAUTH_CLIENT_ID);
         query.append('client_secret', environment.GOOGLE_OAUTH_CLIENT_SECRET);
-        query.append('redirect_uri', 'http://localhost:3000/oauth/google/callback')
+        query.append('redirect_uri', `${environment.FRONTEND_URL}/oauth/google/callback`)
         query.append('grant_type', 'authorization_code')
         
         let accessToken = null;
