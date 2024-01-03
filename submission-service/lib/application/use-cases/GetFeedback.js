@@ -1,4 +1,5 @@
 'use strict';
+import environment from '../../infrastructure/config/environment.js';
 
 export default async (submissionId, { submissionRepository, problemRepository, aiEngine }) => {
     if (!submissionId) {
@@ -14,7 +15,7 @@ export default async (submissionId, { submissionRepository, problemRepository, a
     // if (!problem) {
     //     throw Object.assign(new Error("Problem not found."), { statusCode: 404 });
     // }
-    const problem = await fetch(`http://localhost:3003/${submission.problemId}`);
+    const problem = await fetch(`${environment.PROBLEM_SERVICE_URL}/${submission.problemId}`);
     const statement = await problem.json();
 
     const feedback = await aiEngine.getFeedback(statement.description, submission.code);
