@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  labels:
+    app: {{ .Values.deployment.name }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.podName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.podName }}
+    spec:
+      containers:
+        - name: {{ .Values.deployment.containerName }}
+          image: {{ .Values.deployment.imageName }}
+          imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+          ports:
+            - name: http
+              containerPort: 4001
+              protocol: TCP
+          env:
+            - name: RESEND_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-user-secrets
+                  key: RESEND_API_KEY
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-user-secrets
+                  key: JWT_SECRET
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-user-secrets
+                  key: DATABASE_URL
+            - name: GITHUB_OAUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: app-user-secrets
+                  key: GITHUB_OAUTH_CLIENT_ID
+            - name: GITHUB_OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-user-secrets
+                  key: GITHUB_OAUTH_CLIENT_SECRET
+            - name: GOOGLE_OAUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: app-user-secrets
+                  key: GOOGLE_OAUTH_CLIENT_ID
+            - name: GOOGLE_OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-user-secrets
+                  key: GOOGLE_OAUTH_CLIENT_SECRET
+            - name: KAFKA_BROKERS
+              valueFrom:
+                secretKeyRef:
+                  name: app-user-secrets
+                  key: KAFKA_BROKERS
+            - name: FRONTEND_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-user-secrets
+                  key: FRONTEND_URL
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: app-user-secrets
+                  key: PORT
