@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  labels:
+    app: {{ .Values.deployment.name }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.podName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.podName }}
+    spec:
+      containers:
+        - name: {{ .Values.deployment.containerName }}
+          image: {{ .Values.deployment.imageName }}
+          imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+          ports:
+            - name: http
+              containerPort: 4001
+              protocol: TCP
+          env:
+            - name: RESEND_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-submission-secrets
+                  key: RESEND_API_KEY
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-submission-secrets
+                  key: JWT_SECRET
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-submission-secrets
+                  key: DATABASE_URL
+            - name: KAFKA_BROKERS
+              valueFrom:
+                secretKeyRef:
+                  name: app-submission-secrets
+                  key: KAFKA_BROKERS
+            - name: PROBLEM_SERVICE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-submission-secrets
+                  key: PROBLEM_SERVICE_URL
+            - name: TEST_SERVICE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-submission-secrets
+                  key: TEST_SERVICE_URL
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-submission-secrets
+                  key: GEMINI_API_KEY
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: app-submission-secrets
+                  key: PORT
