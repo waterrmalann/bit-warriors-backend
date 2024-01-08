@@ -3,7 +3,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
-import {Sandbox} from 'v8-sandbox';
+import { Sandbox } from 'v8-sandbox';
 dotenv.config();
 
 const app = express();
@@ -36,7 +36,7 @@ app.post('/submissions', async (req, res) => {
     res.status(200).json({ stdout: value })
 })
 
-const port = 3600;
+const port = process.env.PORT || 3600;
 app.listen(port, () => {
 
     console.log("_______ _______ __   _ ______  ______   _____  _     _");
