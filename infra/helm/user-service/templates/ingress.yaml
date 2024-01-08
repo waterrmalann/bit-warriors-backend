@@ -17,4 +17,4 @@ spec:
           service:
             name: {{ .Values.deployment.serviceName }}
             port:
-              number: 3060
+              number: {{ .Values.secrets.port }}

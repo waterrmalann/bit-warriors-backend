@@ -10,6 +10,6 @@ spec:
   selector:
     app: {{ .Values.deployment.podName }}
   ports:
-    - port: 80
-      targetPort: 4001
+    - port: 80 # container listens
+      targetPort: 3001 # forwards it to -
       nodePort: 31516

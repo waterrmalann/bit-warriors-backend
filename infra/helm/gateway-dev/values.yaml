@@ -1,0 +1,17 @@
+deployment:
+  name: gateway-service-deployment
+  podName: gateway-service-pod
+  serviceName: gateway-service
+  serviceType: NodePort
+  replicaCount: 1
+  imageName: waterrmalann/bit-warriors:gateway-dev
+  imagePullPolicy: Always # IfNotPresent
+  containerName: gateway-service-container
+
+secrets:
+  port: "3001"
+  userService: http://localhost:3000
+  problemService: http://localhost:2000
+  submissionService: http://localhost:1000
+  jwtSecret: shhhh
+  frontendURL: http://localhost:3000

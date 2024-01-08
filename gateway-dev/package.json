@@ -2,11 +2,11 @@
   "name": "gateway-dev",
   "version": "1.0.0",
   "description": "API Gateway for Development Use",
-  "main": "server.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js"
+    "start": "node index.js",
+    "dev": "node --watch index.js"
   },
   "keywords": [],
   "author": "",

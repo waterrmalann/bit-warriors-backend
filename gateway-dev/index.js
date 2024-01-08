@@ -10,7 +10,7 @@ const app = express();
 
 const corsOptions = {
     //! NextJS Frontend Port
-    origin: 'http://localhost:3000',
+    origin: process.env.FRONTEND_URL,
     credentials: true,
     optionsSuccessStatus: 200
 }
@@ -64,7 +64,11 @@ routes.forEach((route) => {
     );
 });
 
-const port = 3001;
+app.get('/', (req, res) => {
+    res.send({ status: "online" })
+})
+
+const port = process.env.PORT;
 app.listen(port, () => {
     console.log(" ▄▄▄▄    ██▓▄▄▄█████▓    █     █░ ▄▄▄       ██▀███   ██▀███   ██▓ ▒█████   ██▀███    ██████ ")
     console.log(" ▓█████▄ ▓██▒▓  ██▒ ▓▒   ▓█░ █ ░█░▒████▄    ▓██ ▒ ██▒▓██ ▒ ██▒▓██▒▒██▒  ██▒▓██ ▒ ██▒▒██    ▒ ")
