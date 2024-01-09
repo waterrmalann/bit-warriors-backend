@@ -38,7 +38,8 @@ export async function LoginUser(req, res) {
             res.cookie('jwt', response.token, {
                 httpOnly: true,
                 // secure: process.env.NODE_ENV !== 'development',
-                // sameSite: 'strict',
+                sameSite: 'none',
+                secure: true,
                 maxAge: 7 * 24 * 60 * 60 * 1000
             });
 
