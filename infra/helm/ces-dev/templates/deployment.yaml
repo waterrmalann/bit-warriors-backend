@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  labels:
+    app: {{ .Values.deployment.name }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.podName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.podName }}
+    spec:
+      containers:
+        - name: {{ .Values.deployment.containerName }}
+          image: {{ .Values.deployment.imageName }}
+          imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.secrets.port }}
+              protocol: TCP
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: app-ces-secrets
+                  key: PORT
