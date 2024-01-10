@@ -1,4 +1,5 @@
 import ICodeRunnerService from "../../domain/services/ICodeRunnerService.js";
+import environment from '../config/environment.js';
 
 export default class extends ICodeRunnerService {
     async evaluate(language, code) {

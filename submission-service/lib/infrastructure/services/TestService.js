@@ -29,8 +29,8 @@ export default class TestService extends ITestService {
 
             if (!result.ok) throw new Error(data.message);
 
-            return { success: true, results: [
-                ...data // { label: string, passed: boolean, message: string }
+            return { success: true, metrics: data.metrics, results: [
+                ...data.output // { label: string, passed: boolean, message: string }
             ]}
         } catch (err) {
             return { success: false, results: [], message: err.message }

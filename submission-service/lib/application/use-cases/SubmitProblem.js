@@ -55,6 +55,7 @@ export default async (
     }
 
     const out = await testService.runTests(language, code, { preloadedCode, functionName, testCases })
+    const { memory, runtime } = out.metrics; 
 
     let totalTests = out.results.length;
     let failedTests = out.results.filter(e => !e.passed);
@@ -64,11 +65,11 @@ export default async (
     } 
 
     if (failedTests.length > 0) {
-        return { success: true, results: failedTests, totalTests: totalTests, testsPassed: testsPassed, runtime: '0ms', memory: '0mb' };
+        return { success: true, results: failedTests, totalTests: totalTests, testsPassed: testsPassed, runtime: runtime, memory: memory };
     }
 
     // All tests passed.
-    const submission = new Submission(null, problemId, language, code, '0m', '0m', userId, Date.now());
+    const submission = new Submission(null, problemId, language, code, runtime, memory, userId, Date.now());
     const sub = await submissionRepository.persist(submission);
 
     let user = await userRepository.findByUsername(userId) ?? await userRepository.persist(new User(null, userId));;
@@ -95,5 +96,5 @@ export default async (
     user.incrementSubmission();
     await userRepository.merge(user);
 
-    return { submissionId: sub?.id, success: true, results: [], totalTests: totalTests, testsPassed: totalTests, runtime: '0ms', memory: '0mb' };
+    return { submissionId: sub?.id, success: true, results: [], totalTests: totalTests, testsPassed: totalTests, runtime: runtime, memory: memory };
 };

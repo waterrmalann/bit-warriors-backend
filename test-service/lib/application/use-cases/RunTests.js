@@ -92,7 +92,13 @@ for (let test of ${reservedVariablePrefix}_testCases) {
 
     console.log('```\n' + code + '\n```');
 
+    let memoryUsageBefore = process.memoryUsage();
+    let startTime = new Date();
     const { success, output, error } = await codeRunner.evaluate(languageId, code);
+    let endTime = new Date();
+    let memoryUsageAfter = process.memoryUsage();
+    const memoryUsage = ((memoryUsageAfter.heapUsed - memoryUsageBefore.heapUsed) / 1024).toFixed(2) + 'mb';
+    const runtime = ((endTime.getTime() - startTime.getTime()) * 10) + 'ms'; // ms
 
     if (error) {
         console.log(error);
@@ -101,7 +107,7 @@ for (let test of ${reservedVariablePrefix}_testCases) {
     }
     
     if (success) {
-        return output;
+        return {output, metrics: { memory: memoryUsage, runtime: runtime }};
         // which will be in the format of [{label, passed, message}]
     } else {
         throw Object.assign(new Error(output || error), { statusCode: 400 });
