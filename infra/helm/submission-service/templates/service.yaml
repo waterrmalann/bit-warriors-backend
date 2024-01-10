@@ -11,5 +11,5 @@ spec:
     app: {{ .Values.deployment.podName }}
   ports:
     - port: 80
-      targetPort: 4001
-      nodePort: 31516
+      targetPort: {{ .Values.secrets.port }}
+      nodePort: 31560
