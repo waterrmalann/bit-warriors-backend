@@ -60,6 +60,23 @@ export default class extends IUserRepository {
         const mongooseUser = await MongooseUser.findOne({ username: username });
         return mapToUserEntity(mongooseUser);
     }
+
+    async calculateRankings() {
+
+        // todo: cache or optimize the leaderboards phase
+        const leaderboardsData = await MongooseUser.aggregate([
+            { $sort: { totalScore: -1 } },
+            { $setWindowFields: {
+                partitionBy: null,
+                sortBy: { totalScore: -1 },
+                output: { rank: { $denseRank: {} } }
+            }},
+            { $project: { _id: 0, username: 1, totalScore: 1, totalSubmissions: 1, rank: 1 } }
+        ]);
+
+        return leaderboardsData;
+  
+    }
 };
 
 function mapToUserEntity(mongooseUser) {

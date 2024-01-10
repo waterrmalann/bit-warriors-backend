@@ -20,8 +20,12 @@ const run = async () => {
     await producer.connect();
     console.log("💬 Established connection with Kafka.");
 
-    await consumer.subscribe({ topics: ['TEST_CREATION', 'TEST_UPDATION', 'PROBLEM_DELETION'] });
-    console.log("\t - Subscribed to TEST_CREATION, TEST_UPDATION, PROBLEM_DELETION");
+    try {
+        await consumer.subscribe({ topics: ['TEST_CREATION', 'TEST_UPDATION', 'PROBLEM_DELETION'] });
+        console.log("\t - Subscribed to TEST_CREATION, TEST_UPDATION, PROBLEM_DELETION");
+    } catch (err) {
+        console.error(err);
+    }
 
     await consumer.run({
         eachMessage: async ({ topic, partition, message }) => {
