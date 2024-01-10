@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  labels:
+    app: {{ .Values.deployment.name }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.podName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.podName }}
+    spec:
+      containers:
+        - name: {{ .Values.deployment.containerName }}
+          image: {{ .Values.deployment.imageName }}
+          imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+          ports:
+            - name: http
+              containerPort: 4000
+              protocol: TCP
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: PORT
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: MONGO_URI
+            - name: SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: SESSION_SECRET
+            - name: NODE_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: NODE_ENV
+            - name: USER_SERVICE
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: USER_SERVICE
+            - name: PROBLEMS_SERVICE
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: PROBLEMS_SERVICE
+            - name: SUBMISSION_SERVICE
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: SUBMISSION_SERVICE
+            - name: TEST_SERVICE
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: TEST_SERVICE
+            - name: FRONTEND_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: FRONTEND_URL
+            - name: KAFKA_BROKERS
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: KAFKA_BROKERS
