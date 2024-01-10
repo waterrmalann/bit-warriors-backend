@@ -16,6 +16,8 @@ export default async (username, { userRepository }) => {
         bio: user.bio,
         followers: user.followers,
         following: user.following,
+        totalScore: user.totalScore,
+        totalSubmissions: user.totalSubmissions
         // ranking, lastSeen
     }
 };
