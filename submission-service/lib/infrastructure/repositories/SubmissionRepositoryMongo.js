@@ -55,6 +55,11 @@ export default class extends ISubmissionRepository {
         const mongooseSubmission = await MongooseSubmission.find({ problemId: problemId, submittedBy: userId }).lean();
         return mongooseSubmission.map(submission => mapToSubmissionEntity(submission));
     }
+
+    async findByUser(userId) {
+        const mongooseSubmission = await MongooseSubmission.find({ submittedBy: userId }).lean();
+        return mongooseSubmission.map(submission => mapToSubmissionEntity(submission));
+    }
 };
 
 function mapToSubmissionEntity(mongooseSubmission) {

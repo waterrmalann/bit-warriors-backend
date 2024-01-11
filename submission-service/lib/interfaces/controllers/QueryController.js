@@ -1,4 +1,5 @@
 import FindSubmissionsOfUserInteractor from '../../application/use-cases/FindSubmissionsOfUser.js';
+import FindAllSubmissionsOfUserInteractor from '../../application/use-cases/FindAllSubmissionsOfUser.js';
 import GetLeaderboardsInteractor from '../../application/use-cases/GetLeaderboards.js';
 import SubmissionRepository from '../../infrastructure/repositories/SubmissionRepositoryMongo.js';
 import UserRepository from '../../infrastructure/repositories/UserRepositoryMongo.js';
@@ -11,6 +12,19 @@ export async function FindSubmissionsByUser(req, res) {
 
     try {
         const result = await FindSubmissionsOfUserInteractor(userId, problemId, {
+            submissionRepository: submissionRepository 
+         });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(err.statusCode || 500).send({ message: err.message });
+    }
+}
+
+export async function FindAllSubmissionsByUser(req, res) {
+    const { userId } = req.params;
+
+    try {
+        const result = await FindAllSubmissionsOfUserInteractor(userId, {
             submissionRepository: submissionRepository 
          });
         res.status(200).send(result);

@@ -37,4 +37,14 @@ export default class ISubmissionRepository {
     async findByProblemAndUser(problemId, userId) {
         throw new Error("findByProblemAndUser method not implemented");
     }
+
+    /**
+     * Finds a submission by user.
+     * @param {string} userId - The username of the user.
+     *
+     * @returns {Promise<Submission[] | null>}
+    */
+    async findByUser(userId) {
+        throw new Error("findByUser method not implemented");
+    }
 };
