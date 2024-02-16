@@ -94,6 +94,7 @@ export async function AuthUserViaGithub(req, res) {
             httpOnly: true,
             // secure: process.env.NODE_ENV !== 'development',
             // sameSite: 'strict',
+            sameSite: 'none',
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
@@ -119,6 +120,7 @@ export async function AuthUserViaGoogle(req, res) {
             httpOnly: true,
             // secure: process.env.NODE_ENV !== 'development',
             // sameSite: 'strict',
+            sameSite: 'none',
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
@@ -131,7 +133,8 @@ export async function AuthUserViaGoogle(req, res) {
 export async function LogoutUser(_req, res) {
     res.cookie('jwt', '', {
         httpOnly: true,
-        expires: new Date(0)
+        expires: new Date(0),
+        sameSite: 'none'
     });
     res.json({ success: true });
 }
